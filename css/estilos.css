@@ -232,7 +232,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    padding: 20ps;
+    padding: 20px;
 }
 
 /* La caja del formulario */
@@ -241,8 +241,8 @@ body {
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    width: 50%;
-    max-height: 380px;
+    width: 100%;
+    max-height: 420px;
     text-align: center;
 }
 
@@ -258,7 +258,7 @@ body {
     text-align: left;
 }
 
-.form-label{
+.form-letra{
     display: block;
     color: #3E2C23;
     margin-bottom: 8px;
@@ -289,7 +289,8 @@ body {
     font-size: 16px;
     font-weight: bold;
     border-radius: 6px;
-    border-top: 10px;
+    margin-top: 10px;
+    border: none;
     cursor: pointer;
     color: #ffffff;
 }
@@ -297,7 +298,7 @@ body {
 /* Enlace de registro con color naranjo*/
 .auth-links{
     margin-top: 20px;
-    font-size: bold;
+    font-weight: bold;
     color: #5a4336;
 }
 
