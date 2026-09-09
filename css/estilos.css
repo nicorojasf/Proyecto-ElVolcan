@@ -237,14 +237,12 @@ body {
 
 /* La caja del formulario */
 .auth-container{
-    background-color: #ffffff !important;
-    padding: 30px 40px;
-    border-radius: 1rem;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     width: 100%;
-    height: auto !important;
-    max-width: 450%;
-    max-height: none !important;
+    max-height: 420px;
     text-align: center;
 }
 
@@ -314,4 +312,86 @@ body {
 .auth-links a:hover{
     color: #e64a19;
     text-decoration: underline;
+}
+
+/* ==========================================================================
+   10. CABECERAS Y ENCABEZADOS DE SECCIÓN (PÁGINAS SECUNDARIAS)
+   ========================================================================== */
+
+/* Recuadro contenedor de las migas de pan (Breadcrumbs) */
+.caja-breadcrumb {
+    background-color: var(--color-beige-contenedor) !important;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Recuadro contenedor del Título y Subtítulo de página */
+.caja-titulo-pagina {
+    background-color: var(--color-beige-contenedor) !important;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.caja-titulo-pagina h2 {
+    color: var(--color-cafe);
+}
+/* EFECTO DE MOVIMIENTO PARA LAS TARJETAS DE PRODUCTOS */
+.tarjeta-custom {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform, box-shadow;
+}
+
+.tarjeta-custom:hover {
+    transform: translateY(-8px); /* Eleva la tarjeta 8px hacia arriba */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important; /* Intensifica la sombra */
+}
+
+/* Asignar un contenedor uniforme */
+.contenedor-imagen-producto {
+    height: 160px; /* Aumentamos ligeramente la altura para mejor visualización */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Forzar el mismo tamaño exacto para todas las imágenes de cilindros */
+.img-cilindro {
+    height: 160px !important;  /* Altura idéntica para todos */
+    width: 160px !important;   /* Ancho idéntico para todos */
+    object-fit: contain;       /* Mantiene la proporción sin deformar */
+    transition: transform 0.3s ease;
+}
+
+/* Efecto de zoom leve en la imagen al hacer hover sobre la tarjeta */
+.tarjeta-custom:hover .img-cilindro {
+    transform: scale(1.08);
+}
+/* Botón Naranja Corporativo */
+.btn-naranja {
+    background-color: var(--color-naranja, #ff5722) !important;
+    color: #ffffff !important;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-naranja:hover {
+    background-color: #e64a19 !important; /* Tono un poco más oscuro al pasar el cursor */
+    color: #ffffff !important;
+}
+
+.btn-naranja:active {
+    transform: scale(0.98); /* Efecto de presión al hacer clic */
+}
+
+/* Animación para el badge del carrito */
+.bounce-anim {
+    animation: bounce 0.3s ease;
+}
+
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
 }

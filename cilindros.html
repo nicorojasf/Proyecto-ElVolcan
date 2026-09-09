@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Cilindro - Gas El Volcán</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Hoja de Estilos Personalizada -->
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+    <!-- ENCABEZADO -->
+    <header class="shadow-sm sticky-top">
+        <nav class="navbar navbar-expand bg-header-principal p-0">
+            <div class="container-fluid px-3 h-100 d-flex align-items-end justify-content-between">
+                
+                <div class="d-flex align-items-end gap-3 pb-2">
+                    <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="index.html">
+                        <img src="imagenes/gas.png" alt="Gas El Volcán" class="logo-header-unico">
+                    </a>
+
+                    <button class="btn text-white d-flex align-items-center gap-2 border-0 p-0 shadow-none ms-2 mb-1" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                        <i class="bi bi-list fs-3 text-naranja"></i>
+                        <span class="fw-semibold fs-5 lh-1">Menú</span>
+                    </button>
+                </div>
+
+                <div class="d-flex align-items-end gap-3 pb-2 mb-1">
+                    <!-- Botón interactivo para abrir el carrito -->
+                    <button class="btn nav-link text-white d-flex align-items-center gap-1 p-0 border-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <span class="badge bg-danger rounded-pill id-cart-badge">0</span>
+                    </button>
+
+                    <span class="text-white-50 lh-1">|</span>
+
+                    <a href="#login" class="nav-link text-white d-flex align-items-center gap-1 p-0">
+                        <i class="bi bi-person-circle fs-5"></i>
+                        <span class="lh-1">Ingresar</span>
+                    </a>
+
+                    <a href="#registro" class="btn btn-naranja btn-sm px-3 rounded-pill fw-semibold">
+                        Registrarse
+                    </a>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+    <!-- MENÚ LATERAL (OFFCANVAS) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2" id="offcanvasMenuLabel">
+                <i class="bi bi-fire text-naranja"></i> Gas El Volcán
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush">
+                <a href="cilindros.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4 active-menu-item">
+                    <span class="d-flex align-items-center gap-3"><i class="bi bi-badge-3d fs-5 text-naranja"></i> Gas Cilindro</span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="index.html#granel" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3"><i class="bi bi-truck fs-5 text-naranja"></i> Gas Granel</span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+                <a href="index.html#medidores" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3"><i class="bi bi-speedometer2 fs-5 text-naranja"></i> Medidores</span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container my-5">
+        
+        <!-- Recuadro 1: Migas de pan -->
+        <div class="caja-breadcrumb d-inline-block px-3 py-2 mb-3">
+            <nav aria-label="breadcrumb" class="m-0">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none text-naranja fw-semibold">Inicio</a></li>
+                    <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Gas Cilindro</li>
+                </ol>
+            </nav>
+        </div>
+
+        <!-- Recuadro 2: Título principal -->
+        <div class="caja-titulo-pagina p-4 mb-4">
+            <h2 class="fw-bold mb-1">Catálogo de Cilindros de Gas</h2>
+            <p class="text-secondary m-0">Selecciona el formato que necesitas para tu hogar o negocio.</p>
+        </div>
+
+        <!-- Grilla de Productos -->
+        <div class="row g-4 mb-5">
+            
+            <!-- Cilindro 5 Kg -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="tarjeta-custom p-4 text-center d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="contenedor-imagen-producto mb-3 d-flex align-items-center justify-content-center">
+                            <img src="imagenes/c5k.png" alt="Cilindro 5 Kg" class="img-fluid img-cilindro" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'bi bi-fire fs-1 text-naranja\'></i>';">
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">Cilindro 5 Kg</h5>
+                        <p class="text-muted small mb-3">Ideal para camping o estufas pequeñas.</p>
+                        <h4 class="fw-bold text-naranja mb-3">$6.500</h4>
+                    </div>
+                    <button class="btn btn-naranja w-100 rounded-pill fw-semibold py-2">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cilindro 11 Kg -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="tarjeta-custom p-4 text-center d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="contenedor-imagen-producto mb-3 d-flex align-items-center justify-content-center">
+                            <img src="imagenes/c11k.png" alt="Cilindro 11 Kg" class="img-fluid img-cilindro" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'bi bi-fire fs-1 text-naranja\'></i>';">
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">Cilindro 11 Kg</h5>
+                        <p class="text-muted small mb-3">El formato estándar para cocina y calefacción.</p>
+                        <h4 class="fw-bold text-naranja mb-3">$12.000</h4>
+                    </div>
+                    <button class="btn btn-naranja w-100 rounded-pill fw-semibold py-2">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cilindro 15 Kg -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="tarjeta-custom p-4 text-center d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="contenedor-imagen-producto mb-3 d-flex align-items-center justify-content-center">
+                            <img src="imagenes/c15k.png" alt="Cilindro 15 Kg" class="img-fluid img-cilindro" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'bi bi-fire fs-1 text-naranja\'></i>';">
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">Cilindro 15 Kg</h5>
+                        <p class="text-muted small mb-3">Mayor autonomía para familias y comercios.</p>
+                        <h4 class="fw-bold text-naranja mb-3">$16.000</h4>
+                    </div>
+                    <button class="btn btn-naranja w-100 rounded-pill fw-semibold py-2">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+
+            <!-- Cilindro 45 Kg -->
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="tarjeta-custom p-4 text-center d-flex flex-column justify-content-between h-100">
+                    <div>
+                        <div class="contenedor-imagen-producto mb-3 d-flex align-items-center justify-content-center">
+                            <img src="imagenes/c45k.png" alt="Cilindro 45 Kg" class="img-fluid img-cilindro" onerror="this.onerror=null; this.parentElement.innerHTML='<i class=\'bi bi-fire fs-1 text-naranja\'></i>';">
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1">Cilindro 45 Kg</h5>
+                        <p class="text-muted small mb-3">Uso de alto consumo, locales y calefacción central.</p>
+                        <h4 class="fw-bold text-naranja mb-3">$45.000</h4>
+                    </div>
+                    <button class="btn btn-naranja w-100 rounded-pill fw-semibold py-2">
+                        Añadir al Carrito
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- MENÚ LATERAL DEL CARRITO (OFFCANVAS) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
+        <div class="offcanvas-header border-bottom bg-light">
+            <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2" id="offcanvasCarritoLabel">
+                <i class="bi bi-cart3 text-naranja"></i> Tu Carrito
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <div class="offcanvas-body d-flex flex-column justify-content-between p-3">
+            <!-- Lista Dinámica de Productos -->
+            <div id="lista-carrito" class="d-flex flex-column gap-3 overflow-auto">
+                <p class="text-center text-muted my-4">El carrito está vacío.</p>
+            </div>
+
+            <!-- Total y Botón de Pago -->
+            <div class="border-top pt-3 mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-3 fs-5 fw-bold text-dark">
+                    <span>Total:</span>
+                    <span id="total-carrito" class="text-naranja">$0</span>
+                </div>
+                <button class="btn btn-naranja w-100 py-2 rounded-pill fw-semibold" id="btn-checkout" disabled>
+                    Ir a Pagar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-principal pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-white mb-3">Acerca De Gas El Volcán</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-1 m-0">
+                        <li><a href="#" class="footer-link text-decoration-none">• Quienes somos</a></li>
+                        <li><a href="#" class="footer-link text-decoration-none">• Trabaja En El Volcan</a></li>
+                        <li><a href="#" class="footer-link text-decoration-none">• Terminos Y Condiciones</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-white mb-3">Atención al cliente</h5>
+                    <p class="mb-1 text-white-50">Emergencias <strong class="text-white">600 600 5817</strong></p>
+                    <p class="mb-0 text-white-50">Servicio al Cliente <strong class="text-white">600 600 2019</strong></p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="fw-bold text-white mb-3">Contacto</h5>
+                    <p class="mb-0 text-white-50">Email: <a href="mailto:contacto@gaselvolcan.cl" class="text-white text-decoration-none">contacto@gaselvolcan.cl</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
