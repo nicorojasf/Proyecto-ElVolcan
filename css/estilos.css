@@ -221,3 +221,94 @@ body {
 .footer-principal hr {
     border-color: #5a4336 !important; /* Línea divisoria suave estilo corporativo */
 }
+
+/* ========================================================================== 
+   9. LOGIN
+   ==========================================================================*/
+
+/* Centrar la caja en la pantalla */
+.auth-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20ps;
+}
+
+/* La caja del formulario */
+.auth-container{
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 50%;
+    max-height: 380px;
+    text-align: center;
+}
+
+/* Titulo color marron */
+.auth-title{
+    color: #3E2C23;
+    margin-bottom: 25px;
+    font-size: 24px;
+}
+
+.form-grupo{
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-label{
+    display: block;
+    color: #3E2C23;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-control{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+/* Al hacer click el borde cambia de color */
+.form-control:focus{
+    outline: none;
+    border-color: #ff5722;
+}
+
+/* Ajuste adicional para el boton del formulario */
+.auth-btn{
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    border-top: 10px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+/* Enlace de registro con color naranjo*/
+.auth-links{
+    margin-top: 20px;
+    font-size: bold;
+    color: #5a4336;
+}
+
+.auth-links a{
+    color: #ff5722;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover{
+    color: #e64a19;
+    text-decoration: underline;
+}
