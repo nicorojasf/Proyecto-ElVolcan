@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gas El Volcán</title>
+    <title>Gas El Volcán - Inicio</title>
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS (Framework de diseño) -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Bootstrap Icons -->
+    <!-- Bootstrap Icons (Librería de íconos gráficos) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <!-- Hoja de Estilos Personalizada -->
@@ -16,134 +16,180 @@
 </head>
 <body>
 
-    <!-- ==========================================================================
-         ENCABEZADO: UNA SOLA BARRA PRINCIPAL
-         ========================================================================== -->
+    <!-- ========================================== -->
+    <!-- 1. ENCABEZADO Y BARRA DE NAVEGACIÓN        -->
+    <!-- ========================================== -->
     <header class="shadow-sm">
-    <nav class="navbar navbar-expand bg-header-principal pt-0 pb-2">
-        <div class="container-fluid px-3 d-flex align-items-end justify-content-between position-relative">
-            
-            <!-- Izquierda: Logo (Ajustado al tamaño completo) + Menú -->
-            <div class="d-flex align-items-end gap-3">
-                <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="#">
-                    <img src="imagenes/gas.png" alt="Gas El Volcán" class="logo-header-unico">
+        <nav class="navbar navbar-expand bg-header-principal pt-0 pb-2">
+            <div class="container-fluid px-3 d-flex align-items-end justify-content-between position-relative">
+                
+                <!-- [IZQUIERDA] Brand Logo y Activador del Menú Lateral -->
+                <div class="d-flex align-items-end gap-3">
+                    <!-- Logotipo que redirige a la página principal -->
+                    <a class="navbar-brand p-0 m-0 d-flex align-items-center" href="index.html">
+                        <img src="imagenes/gas.png" alt="Gas El Volcán" class="logo-header-unico">
+                    </a>
+
+                    <!-- Botón Hamburguesa que despliega el Menú Offcanvas -->
+                    <button class="btn text-white d-flex align-items-center gap-2 border-0 p-0 shadow-none ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
+                        <i class="bi bi-list fs-3 text-naranja"></i>
+                        <span class="fw-semibold fs-5 lh-1">Menú</span>
+                    </button>
+                </div>
+
+                <!-- [DERECHA] Controles de Carrito, Mi Cuenta y Registro -->
+                <div class="d-flex align-items-end gap-3">
+                    <!-- Botón para desplegar el Carrito de Compras -->
+                    <button class="btn nav-link text-white d-flex align-items-center gap-1 p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                        <i class="bi bi-cart3 fs-5"></i>
+                        <!-- Contador flotante de productos en el carrito -->
+                        <span class="badge bg-danger rounded-pill id-cart-badge">0</span>
+                    </button>
+
+                    <!-- Separador vertical decorativo -->
+                    <span class="text-white-50 lh-1">|</span>
+
+                    <!-- Enlace de inicio de sesión de usuario (Ajustado con fs-5 para igualar tamaño del carrito) -->
+                    <a href="login.html" class="nav-link text-white d-flex align-items-center gap-1 p-0" title="Iniciar Sesión">
+                        <i class="bi bi-person-circle fs-5"></i>
+                    </a>
+
+                    <!-- Botón destacado de Registro -->
+                    <a href="registro.html" class="btn btn-danger btn-sm px-3 rounded-pill fw-semibold">
+                        Registrarse
+                    </a>
+                </div>
+
+            </div>
+        </nav>
+    </header>
+
+
+    <!-- ========================================== -->
+    <!-- 2. MENÚ LATERAL DESPLEGABLE (OFFCANVAS)    -->
+    <!-- ========================================== -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
+        <!-- Cabecera del menú lateral con botón de cierre -->
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2" id="offcanvasMenuLabel">
+                <i class="bi bi-fire text-naranja"></i> Gas El Volcán
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+
+        <!-- Cuerpo del menú con lista de categorías principales -->
+        <div class="offcanvas-body p-0">
+            <div class="list-group list-group-flush menu-lateral-list">
+                <!-- Enlace hacia la página de Cilindros -->
+                <a href="cilindros.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-badge-3d fs-5 text-naranja"></i>
+                        Gas Cilindro
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
                 </a>
 
-                <button class="btn text-white d-flex align-items-center gap-2 border-0 p-0 shadow-none ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu">
-                    <i class="bi bi-list fs-3 text-naranja"></i>
-                    <span class="fw-semibold fs-5 lh-1">Menú</span>
+                <!-- Ancla hacia Gas Granel -->
+                <a href="#granel" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-truck fs-5 text-naranja"></i>
+                        Gas Granel
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+
+                <!-- Ancla hacia Medidores -->
+                <a href="#medidores" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-speedometer2 fs-5 text-naranja"></i>
+                        Medidores
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+
+                <!-- Ancla hacia Mangueras / Conexiones -->
+                <a href="#mangueras" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-tools fs-5 text-naranja"></i>
+                        Mangueras/Conexiones
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+
+                <!-- Ancla hacia Accesorios -->
+                <a href="#accesorios" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-grid-fill fs-5 text-naranja"></i>
+                        Accesorios
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+
+                <!-- Ancla hacia Descuentos -->
+                <a href="#descuentos" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-tags-fill fs-5 text-naranja"></i>
+                        Descuentos y Beneficios
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+
+                <div class="border-top my-1"></div>
+
+                <!-- Ancla hacia Sección Contacto -->
+                <a href="#contacto" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
+                    <span class="d-flex align-items-center gap-3">
+                        <i class="bi bi-telephone-outbound fs-5 text-naranja"></i>
+                        Contacto
+                    </span>
+                    <i class="bi bi-chevron-right small text-muted"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ========================================== -->
+    <!-- 3. CARRITO DE COMPRAS LATERAL (OFFCANVAS)  -->
+    <!-- ========================================== -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCarrito" aria-labelledby="offcanvasCarritoLabel">
+        <!-- Cabecera del carrito -->
+        <div class="offcanvas-header border-bottom">
+            <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2" id="offcanvasCarritoLabel">
+                <i class="bi bi-cart3 text-naranja"></i> Tu Carrito
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <!-- Contenido dinámico del carrito -->
+        <div class="offcanvas-body d-flex flex-column justify-content-between">
+            <!-- Listado donde JS inyectará los productos agregados -->
+            <div id="lista-carrito" class="d-flex flex-column gap-2">
+                <p class="text-center text-muted my-4">El carrito está vacío.</p>
+            </div>
+
+            <!-- Total y botón para finalizar compra -->
+            <div class="border-top pt-3 mt-auto">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-bold fs-5">Total:</span>
+                    <span id="total-carrito" class="fw-bold fs-4 text-naranja">$0</span>
+                </div>
+                <button id="btn-checkout" class="btn btn-danger w-100 py-2 fw-bold rounded-pill" disabled>
+                    Ir a Pagar
                 </button>
             </div>
-
-            <!-- Derecha: Alineado abajo -->
-            <div class="d-flex align-items-end gap-3">
-                <a href="#carrito" class="nav-link text-white d-flex align-items-center gap-1 p-0">
-                    <i class="bi bi-cart3 fs-5"></i>
-                    <span class="badge bg-danger rounded-pill">0</span>
-                </a>
-
-                <span class="text-white-50 lh-1">|</span>
-
-                <a href="login.html" class="nav-link text-white d-flex align-items-center gap-1 p-0">
-                    <i class="bi bi-person-circle"></i>
-                    <span class="lh-1">Ingresar</span>
-                </a>
-
-                <a href="#registro" class="btn btn-danger btn-sm px-3 rounded-pill fw-semibold">
-                    Registrarse
-                </a>
-            </div>
-
-        </div>
-    </nav>
-</header>
-    <!-- ==========================================================================
-         MENÚ LATERAL DESLIZABLE (OFFCANVAS)
-         ========================================================================== -->
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasMenuLabel">
-        
-        <!-- Encabezado del Menú Lateral -->
-    <div class="offcanvas-header border-bottom">
-        <h5 class="offcanvas-title fw-bold text-dark d-flex align-items-center gap-2" id="offcanvasMenuLabel">
-            <i class="bi bi-fire text-naranja"></i> Gas El Volcán
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-
-    <!-- Cuerpo del Menú con Enlaces -->
-    <div class="offcanvas-body p-0">
-        <div class="list-group list-group-flush menu-lateral-list">
-            
-            <!-- Redirección a la nueva página -->
-            <a href="cilindros.html" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-badge-3d fs-5 text-naranja"></i>
-                    Gas Cilindro
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <a href="#granel" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-truck fs-5 text-naranja"></i>
-                    Gas Granel
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <a href="#medidores" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-speedometer2 fs-5 text-naranja"></i>
-                    Medidores
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <a href="#mangueras" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-tools fs-5 text-naranja"></i>
-                    Mangueras/Conexiones
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <a href="#accesorios" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-grid-fill fs-5 text-naranja"></i>
-                    Accesorios
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <a href="#descuentos" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-tags-fill fs-5 text-naranja"></i>
-                    Descuentos y Beneficios
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-            <div class="border-top my-1"></div>
-
-            <a href="#contacto" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-4">
-                <span class="d-flex align-items-center gap-3">
-                    <i class="bi bi-telephone-outbound fs-5 text-naranja"></i>
-                    Contacto
-                </span>
-                <i class="bi bi-chevron-right small text-muted"></i>
-            </a>
-
-         </div>
         </div>
     </div>
 
-    <!-- ==========================================================================
-         CONTENIDO PRINCIPAL
-         ========================================================================== -->
+
+    <!-- ========================================== -->
+    <!-- 4. CONTENIDO PRINCIPAL DE LA PÁGINA        -->
+    <!-- ========================================== -->
     <main class="container my-4">
         
-        <!-- Banner + Formulario de Pedido -->
+        <!-- SECCIÓN HERO: Banner Promocional y Formulario Rápido -->
         <div class="row g-4 mb-4">
+            <!-- Columna Izquierda: Mensaje y Banner Principal -->
             <div class="col-lg-7 col-md-6">
                 <div class="banner-principal">
                     <h1 class="banner-titulo">El calor y energía para<br>su hogar y negocio</h1>
@@ -151,10 +197,12 @@
                 </div>
             </div>
 
+            <!-- Columna Derecha: Tarjeta de Pedido Exprés -->
             <div class="col-lg-5 col-md-6">
                 <div class="bg-white p-4 rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between">
                     <h5 class="fw-bold text-center mb-3 text-naranja">Realiza tu pedido de gas aquí</h5>
                     
+                    <!-- Selector de tipo de suministro -->
                     <div class="row g-2 mb-3">
                         <div class="col-6">
                             <button class="btn btn-selector active w-100 fw-bold">Cilindro</button>
@@ -164,11 +212,13 @@
                         </div>
                     </div>
 
+                    <!-- Input para número de teléfono -->
                     <div class="input-group mb-3">
                         <span class="input-group-text bg-light text-secondary">+56</span>
                         <input type="text" class="form-control" placeholder="Ingresa tu número">
                     </div>
 
+                    <!-- Botones de Acción de Pedido -->
                     <div class="d-grid gap-2">
                         <button class="btn text-white fw-bold py-2 bg-danger">Pedir gas Online</button>
                         <button class="btn btn-outline-success fw-bold py-2">Pedir por WhatsApp</button>
@@ -177,15 +227,18 @@
             </div>
         </div>
 
-        <!-- Tarjetas Categorías -->
+
+        <!-- SECCIÓN CATEGORÍAS: Accesos directos a productos -->
         <div class="row g-3 mb-4">
+            <!-- Categoría 1: Cilindros -->
             <div class="col-6 col-md-3">
                 <div class="tarjeta-categoria p-3 rounded-4 shadow-sm text-center d-flex flex-column align-items-center justify-content-between h-100">
                     <span class="fw-bold text-dark mb-3">Gas Disponible</span>
-                    <a href="#cilindro" class="btn btn-danger btn-sm w-100 rounded-pill">Ver más</a>
+                    <a href="cilindros.html" class="btn btn-danger btn-sm w-100 rounded-pill">Ver más</a>
                 </div>
             </div>
 
+            <!-- Categoría 2: Medidores -->
             <div class="col-6 col-md-3">
                 <div class="tarjeta-categoria p-3 rounded-4 shadow-sm text-center d-flex flex-column align-items-center justify-content-between h-100">
                     <span class="fw-bold text-dark mb-3">Medidores</span>
@@ -193,6 +246,7 @@
                 </div>
             </div>
 
+            <!-- Categoría 3: Mangueras -->
             <div class="col-6 col-md-3">
                 <div class="tarjeta-categoria p-3 rounded-4 shadow-sm text-center d-flex flex-column align-items-center justify-content-between h-100">
                     <span class="fw-bold text-dark mb-3">Mangueras / Conexión</span>
@@ -200,6 +254,7 @@
                 </div>
             </div>
 
+            <!-- Categoría 4: Accesorios -->
             <div class="col-6 col-md-3">
                 <div class="tarjeta-categoria p-3 rounded-4 shadow-sm text-center d-flex flex-column align-items-center justify-content-between h-100">
                     <span class="fw-bold text-dark mb-3">Accesorios</span>
@@ -208,22 +263,28 @@
             </div>
         </div>
 
-        <!-- Sección Beneficios -->
+
+        <!-- SECCIÓN VENTAJAS / BENEFICIOS -->
         <div class="bg-white p-4 rounded-4 shadow-sm">
             <h4 class="fw-bold mb-4 text-dark">¿Por qué elegir Gas El Volcán?</h4>
             <div class="row g-3">
+                <!-- Beneficio 1 -->
                 <div class="col-md-4">
                     <div class="p-3 bg-light rounded-3 border-start border-4 border-danger">
                         <h6 class="fw-bold text-dark mb-1">Despacho Rápido</h6>
                         <p class="text-secondary small mb-0">Entregas programadas y urgentes a domicilio.</p>
                     </div>
                 </div>
+
+                <!-- Beneficio 2 -->
                 <div class="col-md-4">
                     <div class="p-3 bg-light rounded-3 border-start border-4 border-danger">
                         <h6 class="fw-bold text-dark mb-1">Máxima Seguridad</h6>
                         <p class="text-secondary small mb-0">Cilindros e instalaciones certificadas SEC.</p>
                     </div>
                 </div>
+
+                <!-- Beneficio 3 -->
                 <div class="col-md-4">
                     <div class="p-3 bg-light rounded-3 border-start border-4 border-danger">
                         <h6 class="fw-bold text-dark mb-1">Atención 24/7</h6>
@@ -235,10 +296,15 @@
 
     </main>
 
-    <!-- FOOTER -->
+
+    <!-- ========================================== -->
+    <!-- 5. PIE DE PÁGINA (FOOTER PRINCIPAL)        -->
+    <!-- ========================================== -->
     <footer class="footer-principal pt-5">
         <div class="container pb-4">
             <div class="row g-4">
+                
+                <!-- Columna 1: Enlaces informativos sobre la empresa -->
                 <div class="col-md-4">
                     <h5 class="fw-bold text-white mb-3">Acerca De Gas El Volcán</h5>
                     <ul class="list-unstyled text-secondary-custom mb-0">
@@ -250,17 +316,14 @@
                     </ul>
                 </div>
 
-                <!-- Columna de Atención al Cliente y Contacto -->
+                <!-- Columna 2: Central de atención telefónica y pedidos -->
                 <div class="col-md-4">
                     <h5 class="fw-bold text-white mb-3">Atención al cliente</h5>
-                    
                     <div class="d-flex flex-column gap-1 text-secondary-custom mb-3">
                         <p class="mb-0">Emergencias <strong class="text-white">600 600 5817</strong></p>
                         <p class="mb-0">Servicio al Cliente <strong class="text-white">600 600 2019</strong></p>
                     </div>
-
                     <hr class="border-secondary opacity-50 my-3">
-
                     <div class="d-flex flex-column gap-1 text-secondary-custom">
                         <p class="mb-0">Pedidos Cilindros <strong class="text-white">600 600 0707</strong></p>
                         <p class="mb-0">Pedidos Granel Nacional <strong class="text-white">600 600 2811</strong></p>
@@ -268,13 +331,17 @@
                     </div>
                 </div>
 
+                <!-- Columna 3: Información de contacto digital y horarios -->
                 <div class="col-md-4">
                     <h5 class="fw-bold text-white mb-3">Contacto</h5>
                     <p class="text-secondary-custom mb-1">Email: <a href="mailto:contacto@gaselvolcan.cl" class="footer-link">contacto@gaselvolcan.cl</a></p>
                     <p class="text-secondary-custom mb-0">Atención: Lun a Dom 8:00 - 20:00</p>
                 </div>
+
             </div>
         </div>
+
+        <!-- Sub-footer: Derechos de autor y teléfono rápido -->
         <div class="sub-footer py-3">
             <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
                 <div class="small text-muted">
@@ -287,8 +354,13 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS Bundle -->
+
+    <!-- ========================================== -->
+    <!-- 6. SCRIPTS Y LIBRERÍAS DE JAVASCRIPT       -->
+    <!-- ========================================== -->
+    <!-- JS de Bootstrap para componentes interactivos -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <!-- Lógica personalizada de la aplicación -->
+    <script src="js/app.js"></script>
 </body>
 </html>
