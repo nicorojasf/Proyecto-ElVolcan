@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. CONFIGURACIÓN GENERAL Y PALETA BASE
+   1. VARIABLES Y CONFIGURACIÓN GLOBAL (TODAS LAS VISTAS)
    ========================================================================== */
 :root {
     --color-cafe: #3E2C23;
@@ -18,31 +18,63 @@ body {
     color: #91380f;
 }
 
+/* Inputs y cajas de texto globales */
+.form-control, 
+.input-group-text {
+    background-color: #ffffff !important;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--color-naranja);
+}
+
+
 /* ==========================================================================
-   2. ENCABEZADO Y UNIFICACIÓN DE BARRA
+   2. ENCABEZADO Y NAVEGACIÓN PRINCIPAL (HEADER GLOBAL)
    ========================================================================== */
 /* Altura de la barra fija */
 .bg-header-principal {
     background-color: var(--color-cafe) !important;
-    height: 65px; /* Define la altura exacta de tu barra */
+    height: 65px;
 }
 
-/* El logo cubre toda la altura sin empujar la barra */
+/* Ajustes del logotipo en la cabecera */
 .logo-header-unico {
-    height: 65px; /* Mismo alto de la barra */
+    height: 65px;
     width: auto;
     object-fit: contain;
-    margin-top: -5px; /* Neutraliza el padding para tocar borde superior e inferior */
+    margin-top: -5px;
     filter: brightness(0) invert(1);
 }
+
+
 /* ==========================================================================
-   3. COMPONENTES GLOBALES, ICONOS Y BOTONES
+   3. BOTONES, COMPONENTES INTERACTIVOS Y BADGES (GLOBAL)
    ========================================================================== */
-/* Colores corporativos naranja */
+/* Utilitarios de color texto */
 .text-naranja {
     color: var(--color-naranja) !important;
 }
 
+/* Botón principal Naranja Corporativo */
+.btn-naranja {
+    background-color: var(--color-naranja) !important;
+    color: #ffffff !important;
+    border: none;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-naranja:hover {
+    background-color: var(--color-naranja-hover) !important;
+    color: #ffffff !important;
+}
+
+.btn-naranja:active {
+    transform: scale(0.98);
+}
+
+/* Sobreescrituras para botones nativos de Bootstrap */
 .bg-danger, 
 .btn-danger,
 .btn-primary,
@@ -60,51 +92,63 @@ body {
     transform: translateY(-1px);
 }
 
-/* Contador del carrito de compras */
+/* Contador e ícono flotante del carrito */
 .badge.bg-danger {
     background-color: var(--color-naranja) !important;
     font-size: 0.75rem;
 }
 
-/* ==========================================================================
-   4. TARJETAS, CONTENEDORES Y REGLAS DE COLOR
-   ========================================================================== */
-/* Sobreescritura general de contenedores claros */
-.bg-white,
-.tarjeta-custom {
-    background-color: var(--color-beige-contenedor) !important;
-    border-radius: 1rem;
+/* Animación de rebote para actualización del carrito */
+.bounce-anim {
+    animation: bounce 0.3s ease;
 }
 
-/* Tarjetas de categorías independientes */
-.tarjeta-categoria {
-    background-color: var(--color-beige-contenedor);
-    min-height: 120px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+@keyframes bounce {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
 }
 
-.tarjeta-categoria:hover,
-.seccion-categorias .bg-white:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1) !important;
-    cursor: pointer;
-}
-
-/* Sub-tarjetas internas (Despacho Rápido, Seguridad, etc.) */
-.bg-light,
-[class*="bg-body"] {
-    background-color: var(--color-beige-subtarjeta) !important;
-}
-
-/* Inputs y cajas de texto */
-.form-control, 
-.input-group-text {
-    background-color: #ffffff !important;
-}
 
 /* ==========================================================================
-   5. BANNER PRINCIPAL (HERO)
+   4. MENÚS DESPLEGABLES / OFFCANVAS (GLOBAL)
    ========================================================================== */
+.offcanvas {
+    width: 320px !important;
+    background-color: #F1E8D9 !important;
+}
+
+/* Ajustes visuales para el Offcanvas de Navegación */
+#offcanvasMenu .offcanvas-body,
+#offcanvasMenu .menu-lateral-list .list-group-item {
+    background-color: #f7f1e5;
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+.menu-lateral-list .list-group-item {
+    background-color: transparent !important;
+    border-color: #e5d5c5;
+    color: #0B132B;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.menu-lateral-list .list-group-item:hover {
+    background-color: rgba(255, 87, 34, 0.1) !important;
+    color: var(--color-naranja) !important;
+}
+
+.menu-lateral-list .list-group-item i,
+.menu-lateral-list .list-group-item:hover i {
+    color: var(--color-naranja) !important;
+}
+
+
+/* ==========================================================================
+   5. VISTA INICIO / INDEX.HTML (SECCIONES Y BANNERS)
+   ========================================================================== */
+/* Banner Principal (Hero) */
 .banner-principal {
     background-image: url('../imagenes/fondo.jpg') !important;
     background-position: center !important;
@@ -133,9 +177,21 @@ body {
     max-width: 280px;
 }
 
-/* ==========================================================================
-   6. FORMULARIO DE PEDIDOS (SELECTOR CILINDRO / TANQUE)
-   ========================================================================== */
+/* Tarjetas de Categorías del Inicio */
+.tarjeta-categoria {
+    background-color: var(--color-beige-contenedor);
+    min-height: 120px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-categoria:hover,
+.seccion-categorias .bg-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1) !important;
+    cursor: pointer;
+}
+
+/* Formulario Selector Rápido (Cilindro / Tanque) */
 .btn-selector {
     background-color: #f0f0f0;
     border-color: var(--color-naranja);
@@ -153,38 +209,159 @@ body {
     color: #ffffff !important;
 }
 
+
 /* ==========================================================================
-   7. MENÚ LATERAL DESLIZABLE (OFFCANVAS)
+   6. VISTAS AUTENTICACIÓN / LOGIN.HTML Y REGISTRO.HTML
    ========================================================================== */
-.offcanvas {
-    width: 320px !important;
-    background-color: #F1E8D9 !important;
+/* Envoltorio para centrar el formulario en la pantalla */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 130px);
+    padding: 20px;
 }
 
-.menu-lateral-list .list-group-item {
-    background-color: transparent !important;
-    border-color: #e5d5c5;
-    color: #0B132B;
-    font-weight: 500;
-    font-size: 0.95rem;
-    transition: background-color 0.2s ease, color 0.2s ease;
+/* Contenedor tipo tarjeta blanca para formularios auth */
+.auth-container {
+/* La caja del formulario */
+.auth-container{
+    background-color: #ffffff !important;
+    padding: 30px 40px;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 450px;
+    height: auto !important;
+    max-width: 450%;
+    max-height: none !important;
+    text-align: center;
 }
 
-.menu-lateral-list .list-group-item:hover {
-    background-color: rgba(255, 87, 34, 0.1) !important;
-    color: var(--color-naranja) !important;
+/* Títulos y etiquetas internas */
+.auth-title {
+    color: var(--color-cafe);
+    margin-bottom: 25px;
+    font-size: 24px;
 }
 
-.menu-lateral-list .list-group-item i,
-.menu-lateral-list .list-group-item:hover i {
-    color: var(--color-naranja) !important;
+.form-grupo {
+    margin-bottom: 20px;
+    text-align: left;
 }
+
+.form-letra {
+    display: block;
+    color: var(--color-cafe);
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+/* Enlaces pie de formulario auth */
+.auth-links {
+    margin-top: 20px;
+    font-weight: bold;
+    color: #5a4336;
+}
+
+.auth-links a {
+    color: var(--color-naranja);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.auth-links a:hover {
+    color: var(--color-naranja-hover);
+    text-decoration: underline;
+}
+
 
 /* ==========================================================================
-   8. PIE DE PÁGINA (FOOTER)
+   7. VISTAS CATÁLOGO / CILINDROS.HTML Y PÁGINAS SECUNDARIAS
+   ========================================================================== */
+/* Bloques de encabezado y migas de pan */
+.caja-breadcrumb {
+    background-color: var(--color-beige-contenedor) !important;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04) !important;
+}
+
+.caja-titulo-pagina {
+    background-color: var(--color-beige-contenedor) !important;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+
+.caja-titulo-pagina h2 {
+    color: var(--color-cafe);
+}
+
+/* Tarjetas de productos y contenedores */
+.bg-white,
+.tarjeta-custom {
+    background-color: var(--color-beige-contenedor) !important;
+    border-radius: 1rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    will-change: transform, box-shadow;
+}
+
+.tarjeta-custom:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.bg-light,
+[class*="bg-body"] {
+    background-color: var(--color-beige-subtarjeta) !important;
+}
+
+/* Formateo de imágenes dentro del catálogo */
+.contenedor-imagen-producto {
+    height: 160px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-cilindro {
+    height: 160px !important;
+    width: 160px !important;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.tarjeta-custom:hover .img-cilindro {
+    transform: scale(1.08);
+}
+
+
+/* ==========================================================================
+   8. PIE DE PÁGINA / FOOTER (GLOBAL)
    ========================================================================== */
 .footer-principal {
     background-color: var(--color-cafe-footer);
+}
+
+.footer-principal p {
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.footer-principal hr {
+    border-color: #5a4336 !important;
 }
 
 .text-secondary-custom,
@@ -200,6 +377,7 @@ body {
     color: var(--color-naranja);
 }
 
+/* Sub-footer (Derechos de autor y teléfono de emergencia) */
 .sub-footer {
     background-color: var(--color-beige-fondo); 
     border-top: 1px solid #e9ecef;
@@ -211,189 +389,4 @@ body {
 .sub-footer strong,
 .sub-footer i {
     color: var(--color-cafe-footer) !important; 
-}
-/* Estilos para el bloque de Atención al Cliente en el Footer */
-.footer-principal p {
-    font-size: 0.92rem;
-    line-height: 1.6;
-}
-
-.footer-principal hr {
-    border-color: #5a4336 !important; /* Línea divisoria suave estilo corporativo */
-}
-
-/* ========================================================================== 
-   9. LOGIN
-   ==========================================================================*/
-
-/* Centrar la caja en la pantalla */
-.auth-wrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-/* La caja del formulario */
-.auth-container{
-    background-color: #ffffff !important;
-    padding: 30px 40px;
-    border-radius: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    width: 100%;
-    height: auto !important;
-    max-width: 450%;
-    max-height: none !important;
-    text-align: center;
-}
-
-/* Titulo color marron */
-.auth-title{
-    color: #3E2C23;
-    margin-bottom: 25px;
-    font-size: 24px;
-}
-
-.form-grupo{
-    margin-bottom: 20px;
-    text-align: left;
-}
-
-.form-letra{
-    display: block;
-    color: #3E2C23;
-    margin-bottom: 8px;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.form-control{
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #dcdcdc;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 14px;
-    transition: border-color 0.3s ease;
-}
-
-/* Al hacer click el borde cambia de color */
-.form-control:focus{
-    outline: none;
-    border-color: #ff5722;
-}
-
-/* Ajuste adicional para el boton del formulario */
-.auth-btn{
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 6px;
-    margin-top: 10px;
-    border: none;
-    cursor: pointer;
-    color: #ffffff;
-}
-
-/* Enlace de registro con color naranjo*/
-.auth-links{
-    margin-top: 20px;
-    font-weight: bold;
-    color: #5a4336;
-}
-
-.auth-links a{
-    color: #ff5722;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.auth-links a:hover{
-    color: #e64a19;
-    text-decoration: underline;
-}
-
-/* ==========================================================================
-   10. CABECERAS Y ENCABEZADOS DE SECCIÓN (PÁGINAS SECUNDARIAS)
-   ========================================================================== */
-
-/* Recuadro contenedor de las migas de pan (Breadcrumbs) */
-.caja-breadcrumb {
-    background-color: var(--color-beige-contenedor) !important;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04) !important;
-}
-
-/* Recuadro contenedor del Título y Subtítulo de página */
-.caja-titulo-pagina {
-    background-color: var(--color-beige-contenedor) !important;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
-}
-
-.caja-titulo-pagina h2 {
-    color: var(--color-cafe);
-}
-/* EFECTO DE MOVIMIENTO PARA LAS TARJETAS DE PRODUCTOS */
-.tarjeta-custom {
-    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
-                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    will-change: transform, box-shadow;
-}
-
-.tarjeta-custom:hover {
-    transform: translateY(-8px); /* Eleva la tarjeta 8px hacia arriba */
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important; /* Intensifica la sombra */
-}
-
-/* Asignar un contenedor uniforme */
-.contenedor-imagen-producto {
-    height: 160px; /* Aumentamos ligeramente la altura para mejor visualización */
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Forzar el mismo tamaño exacto para todas las imágenes de cilindros */
-.img-cilindro {
-    height: 160px !important;  /* Altura idéntica para todos */
-    width: 160px !important;   /* Ancho idéntico para todos */
-    object-fit: contain;       /* Mantiene la proporción sin deformar */
-    transition: transform 0.3s ease;
-}
-
-/* Efecto de zoom leve en la imagen al hacer hover sobre la tarjeta */
-.tarjeta-custom:hover .img-cilindro {
-    transform: scale(1.08);
-}
-/* Botón Naranja Corporativo */
-.btn-naranja {
-    background-color: var(--color-naranja, #ff5722) !important;
-    color: #ffffff !important;
-    border: none;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-naranja:hover {
-    background-color: #e64a19 !important; /* Tono un poco más oscuro al pasar el cursor */
-    color: #ffffff !important;
-}
-
-.btn-naranja:active {
-    transform: scale(0.98); /* Efecto de presión al hacer clic */
-}
-
-/* Animación para el badge del carrito */
-.bounce-anim {
-    animation: bounce 0.3s ease;
-}
-
-@keyframes bounce {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.4); }
-    100% { transform: scale(1); }
 }
