@@ -39,6 +39,17 @@ body {
     height: 65px;
 }
 
+/* Móvil: logo y botón más pequeños para que todo quepa en una fila */
+@media (max-width: 575.98px) {
+    .logo-header-unico {
+        height: 52px;
+    }
+    .boton-registro {
+        font-size: 0.8rem;
+        white-space: nowrap;
+    }
+}
+
 /* Ajustes del logotipo en la cabecera */
 .logo-header-unico {
     height: 65px;
@@ -115,6 +126,7 @@ body {
    ========================================================================== */
 .offcanvas {
     width: 320px !important;
+    max-width: 85vw;
     background-color: #F1E8D9 !important;
 }
 
