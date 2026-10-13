@@ -1,8 +1,18 @@
 import { Offcanvas } from 'react-bootstrap'
 import { useCarrito } from '../context/CarritoContext'
+import { registrarVenta } from '../data/adminStore'
 
 export default function Carrito({ show, onHide }) {
-  const { carrito, cambiarCantidad, total, precioDe } = useCarrito()
+  const { carrito, cambiarCantidad, vaciar, total, precioDe } = useCarrito()
+
+  // Suma la venta al panel de administrador, vacía el carrito y cierra el panel
+  const pagar = () => {
+    registrarVenta(carrito, precioDe)
+    vaciar()
+    alert('¡Pago realizado con éxito! Tu pedido ha sido procesado y el stock actualizado.')
+    onHide()
+  }
+
   return (
     <Offcanvas show={show} onHide={onHide} placement="end" id="offcanvasCarrito">
       <Offcanvas.Header closeButton className="border-bottom bg-light">
@@ -63,6 +73,7 @@ export default function Carrito({ show, onHide }) {
           <button
             className="btn btn-naranja w-100 py-2 rounded-pill fw-semibold"
             disabled={carrito.length === 0}
+            onClick={pagar}
           >
             Ir a Pagar
           </button>

@@ -27,6 +27,7 @@ body {
 .form-control:focus {
     outline: none;
     border-color: var(--color-naranja);
+    box-shadow: 0 0 0 0.25rem rgba(255, 87, 34, 0.25);
 }
 
 
@@ -250,6 +251,7 @@ body {
     color: var(--color-cafe);
     margin-bottom: 25px;
     font-size: 24px;
+    font-weight: 700;
 }
 
 .form-grupo {
@@ -272,6 +274,39 @@ body {
     font-weight: bold;
     border-radius: 6px;
     margin-top: 10px;
+}
+
+/* Errores de validación de los formularios */
+.form-control.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.invalid-feedback-personalizado {
+    font-size: 0.85rem;
+    color: #dc3545;
+    margin-top: 0.3rem;
+    display: none;
+    font-weight: 600;
+}
+
+/* Tarjeta de auth en móvil y tablet */
+@media (max-width: 767.98px) {
+    .auth-container {
+        padding: 20px 15px !important;
+        margin: 10px;
+    }
+
+    /* Menú lateral del panel admin pasa a ocupar todo el ancho */
+    aside {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1279.98px) {
+    .auth-container {
+        max-width: 420px;
+    }
 }
 
 /* Enlaces pie de formulario auth */
@@ -360,6 +395,7 @@ body {
    ========================================================================== */
 .footer-principal {
     background-color: var(--color-cafe-footer);
+    color: #ffffff;
 }
 
 .footer-principal p {
