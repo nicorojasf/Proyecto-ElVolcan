@@ -1,6 +1,3 @@
-// Datos del panel de administrador (métricas e inventario), guardados en localStorage.
-// Es la misma clave y forma que usaba app.js: 'datosAdmin'.
-
 const DATOS_INICIALES = {
   pedidosHoy: 38,
   cilindrosEntregados: 45,
@@ -9,7 +6,6 @@ const DATOS_INICIALES = {
   stockVacios: { '5kg': 10, '11kg': 34, '15kg': 18, '45kg': 5 },
 }
 
-// Qué producto del catálogo corresponde a cada tamaño de cilindro
 const TAMANO_POR_CODIGO = {
   CL001: '5kg',
   CL002: '11kg',
@@ -27,7 +23,21 @@ export function leerDatosAdmin() {
   }
 }
 
-// Se llama al pagar: suma la venta a las métricas y mueve los cilindros de llenos a vacíos
+export function verificarStock(carrito) {
+  const datos = leerDatosAdmin()
+
+  for (const item of carrito) {
+    const tamano = TAMANO_POR_CODIGO[item.codigo]
+    if (tamano && item.cantidad > datos.stockLlenos[tamano]) {
+      return {
+        ok: false,
+        motivo: `Stock insuficiente de ${item.nombre}: solo quedan ${datos.stockLlenos[tamano]} unidades disponibles para despacho.`,
+      }
+    }
+  }
+  return { ok: true, motivo: '' }
+}
+
 export function registrarVenta(carrito, precioDe) {
   const datos = leerDatosAdmin()
   let totalCompra = 0

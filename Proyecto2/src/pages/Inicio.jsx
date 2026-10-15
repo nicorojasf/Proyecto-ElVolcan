@@ -3,10 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import TarjetaCategoria from '../components/TarjetaCategoria'
 import { categorias } from '../data/productos'
 
-// ⚠️ Cambia este número por el WhatsApp real del negocio (formato: 56 + número, sin + ni espacios)
 const NUMERO_WHATSAPP = '56948760703'
 
-// Datos de la página (arreglos que luego se recorren con .map)
 {categorias.map((c) => (
   <TarjetaCategoria key={c.slug} titulo={c.nombre} ruta={`/productos/${c.slug}`} />
 ))}
@@ -20,19 +18,16 @@ const beneficios = [
 export default function Inicio() {
   const navigate = useNavigate()
 
-  // ESTADOS del formulario de pedido rápido
-  const [tipo, setTipo] = useState('cilindro')   // 'cilindro' o 'tanque'
+  const [tipo, setTipo] = useState('cilindro')
   const [telefono, setTelefono] = useState('')
-  const [mensaje, setMensaje] = useState('')     // errores o avisos para el usuario
+  const [mensaje, setMensaje] = useState('')
 
-  // Se ejecuta cada vez que el usuario escribe en el input
   const handleTelefono = (e) => {
     const soloNumeros = e.target.value.replace(/\D/g, '').slice(0, 9)
     setTelefono(soloNumeros)
-    setMensaje('')   // al escribir, se limpia el error anterior
+    setMensaje('')
   }
 
-  // Un celular chileno tiene 9 dígitos y parte con 9
   const validar = () => {
     if (!/^9\d{8}$/.test(telefono)) {
       setMensaje('Ingresa un celular válido de 9 dígitos que comience con 9.')
@@ -44,7 +39,7 @@ export default function Inicio() {
   const pedirOnline = () => {
     if (!validar()) return
     if (tipo === 'cilindro') {
-     navigate('/productos/cilindros')   // navegación programática
+     navigate('/productos/cilindros')
     } else {
       setMensaje('Para pedidos de tanque llama a Pedidos Granel: 600 600 2811.')
     }
@@ -62,7 +57,6 @@ export default function Inicio() {
   return (
     <main className="container my-4">
 
-      {/* HERO: banner + tarjeta de pedido */}
       <div className="row g-4 mb-4">
         <div className="col-lg-7 col-md-6">
           <div className="banner-principal p-4">
@@ -81,7 +75,6 @@ export default function Inicio() {
               Realiza tu pedido de gas aquí
             </h5>
 
-            {/* Selector: el botón activo depende del estado 'tipo' */}
             <div className="row g-2 mb-3">
               <div className="col-6">
                 <button
@@ -101,7 +94,6 @@ export default function Inicio() {
               </div>
             </div>
 
-            {/* Input CONTROLADO: su valor viene del estado */}
             <div className="input-group mb-2">
               <span className="input-group-text bg-light text-secondary">+56</span>
               <input
@@ -114,7 +106,6 @@ export default function Inicio() {
               />
             </div>
 
-            {/* Mensaje solo si existe (renderizado condicional) */}
             {mensaje && <p className="text-danger small mb-2">{mensaje}</p>}
 
             <div className="d-grid gap-2 mt-2">
@@ -129,7 +120,6 @@ export default function Inicio() {
         </div>
       </div>
 
-      {/* CATEGORÍAS: una tarjeta por cada elemento del arreglo */}
       <div className="row g-3 mb-4">
         {categorias.map((c) => (
           <TarjetaCategoria
@@ -140,7 +130,6 @@ export default function Inicio() {
         ))}
       </div>
 
-      {/* BENEFICIOS */}
       <div className="bg-white p-4 rounded-4 shadow-sm">
         <h4 className="fw-bold mb-4 text-dark">¿Por qué elegir Gas El Volcán?</h4>
         <div className="row g-3">

@@ -1,6 +1,3 @@
-/* ==========================================================================
-   1. VARIABLES Y CONFIGURACIÓN GLOBAL (TODAS LAS VISTAS)
-   ========================================================================== */
 :root {
     --color-cafe: #3E2C23;
     --color-cafe-footer: #382b26;
@@ -18,7 +15,6 @@ body {
     color: #91380f;
 }
 
-/* Inputs y cajas de texto globales */
 .form-control, 
 .input-group-text {
     background-color: #ffffff !important;
@@ -30,17 +26,11 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(255, 87, 34, 0.25);
 }
 
-
-/* ==========================================================================
-   2. ENCABEZADO Y NAVEGACIÓN PRINCIPAL (HEADER GLOBAL)
-   ========================================================================== */
-/* Altura de la barra fija */
 .bg-header-principal {
     background-color: var(--color-cafe) !important;
     height: 65px;
 }
 
-/* Móvil: logo y botón más pequeños para que todo quepa en una fila */
 @media (max-width: 575.98px) {
     .logo-header-unico {
         height: 52px;
@@ -51,7 +41,6 @@ body {
     }
 }
 
-/* Ajustes del logotipo en la cabecera */
 .logo-header-unico {
     height: 65px;
     width: auto;
@@ -60,16 +49,10 @@ body {
     filter: brightness(0) invert(1);
 }
 
-
-/* ==========================================================================
-   3. BOTONES, COMPONENTES INTERACTIVOS Y BADGES (GLOBAL)
-   ========================================================================== */
-/* Utilitarios de color texto */
 .text-naranja {
     color: var(--color-naranja) !important;
 }
 
-/* Botón principal Naranja Corporativo */
 .btn-naranja {
     background-color: var(--color-naranja) !important;
     color: #ffffff !important;
@@ -86,7 +69,6 @@ body {
     transform: scale(0.98);
 }
 
-/* Sobreescrituras para botones nativos de Bootstrap */
 .bg-danger, 
 .btn-danger,
 .btn-primary,
@@ -104,13 +86,11 @@ body {
     transform: translateY(-1px);
 }
 
-/* Contador e ícono flotante del carrito */
 .badge.bg-danger {
     background-color: var(--color-naranja) !important;
     font-size: 0.75rem;
 }
 
-/* Animación de rebote para actualización del carrito */
 .bounce-anim {
     animation: bounce 0.3s ease;
 }
@@ -121,17 +101,12 @@ body {
     100% { transform: scale(1); }
 }
 
-
-/* ==========================================================================
-   4. MENÚS DESPLEGABLES / OFFCANVAS (GLOBAL)
-   ========================================================================== */
 .offcanvas {
     width: 320px !important;
     max-width: 85vw;
     background-color: #F1E8D9 !important;
 }
 
-/* Ajustes visuales para el Offcanvas de Navegación */
 #offcanvasMenu .offcanvas-body,
 #offcanvasMenu .menu-lateral-list .list-group-item {
     background-color: #f7f1e5;
@@ -157,11 +132,6 @@ body {
     color: var(--color-naranja) !important;
 }
 
-
-/* ==========================================================================
-   5. VISTA INICIO / INDEX.HTML (SECCIONES Y BANNERS)
-   ========================================================================== */
-/* Banner Principal (Hero) */
 .banner-principal {
    background-image: url('/imagenes/fondo.jpg') !important;
     background-position: center !important;
@@ -190,7 +160,6 @@ body {
     max-width: 280px;
 }
 
-/* Tarjetas de Categorías del Inicio */
 .tarjeta-categoria {
     background-color: var(--color-beige-contenedor);
     min-height: 120px;
@@ -204,7 +173,6 @@ body {
     cursor: pointer;
 }
 
-/* Formulario Selector Rápido (Cilindro / Tanque) */
 .btn-selector {
     background-color: #f0f0f0;
     border-color: var(--color-naranja);
@@ -222,11 +190,6 @@ body {
     color: #ffffff !important;
 }
 
-
-/* ==========================================================================
-   6. VISTAS AUTENTICACIÓN / LOGIN.HTML Y REGISTRO.HTML
-   ========================================================================== */
-/* Envoltorio para centrar el formulario en la pantalla */
 .auth-wrapper {
     display: flex;
     justify-content: center;
@@ -235,7 +198,6 @@ body {
     padding: 20px;
 }
 
-/* Contenedor tipo tarjeta blanca para formularios auth */
 .auth-container {
     background-color: #ffffff !important;
     padding: 30px 40px;
@@ -246,7 +208,6 @@ body {
     text-align: center;
 }
 
-/* Títulos y etiquetas internas */
 .auth-title {
     color: var(--color-cafe);
     margin-bottom: 25px;
@@ -276,7 +237,6 @@ body {
     margin-top: 10px;
 }
 
-/* Errores de validación de los formularios */
 .form-control.is-invalid {
     border-color: #dc3545 !important;
 }
@@ -289,14 +249,12 @@ body {
     font-weight: 600;
 }
 
-/* Tarjeta de auth en móvil y tablet */
 @media (max-width: 767.98px) {
     .auth-container {
         padding: 20px 15px !important;
         margin: 10px;
     }
 
-    /* Menú lateral del panel admin pasa a ocupar todo el ancho */
     aside {
         width: 100% !important;
         margin-bottom: 1rem;
@@ -309,7 +267,6 @@ body {
     }
 }
 
-/* Enlaces pie de formulario auth */
 .auth-links {
     margin-top: 20px;
     font-weight: bold;
@@ -328,11 +285,6 @@ body {
     text-decoration: underline;
 }
 
-
-/* ==========================================================================
-   7. VISTAS CATÁLOGO / CILINDROS.HTML Y PÁGINAS SECUNDARIAS
-   ========================================================================== */
-/* Bloques de encabezado y migas de pan */
 .caja-breadcrumb {
     background-color: var(--color-beige-contenedor) !important;
     border-radius: 0.75rem;
@@ -349,7 +301,6 @@ body {
     color: var(--color-cafe);
 }
 
-/* Tarjetas de productos y contenedores */
 .bg-white,
 .tarjeta-custom {
     background-color: var(--color-beige-contenedor) !important;
@@ -369,7 +320,6 @@ body {
     background-color: var(--color-beige-subtarjeta) !important;
 }
 
-/* Formateo de imágenes dentro del catálogo */
 .contenedor-imagen-producto {
     height: 160px;
     width: 100%;
@@ -389,10 +339,6 @@ body {
     transform: scale(1.08);
 }
 
-
-/* ==========================================================================
-   8. PIE DE PÁGINA / FOOTER (GLOBAL)
-   ========================================================================== */
 .footer-principal {
     background-color: var(--color-cafe-footer);
     color: #ffffff;
@@ -420,7 +366,6 @@ body {
     color: var(--color-naranja);
 }
 
-/* Sub-footer (Derechos de autor y teléfono de emergencia) */
 .sub-footer {
     background-color: var(--color-beige-fondo); 
     border-top: 1px solid #e9ecef;
@@ -432,3 +377,29 @@ body {
 .sub-footer strong,
 .sub-footer i {
     color: var(--color-cafe-footer) !important; }
+
+.admin-aside {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .admin-aside {
+        width: 260px;
+        flex-shrink: 0;
+    }
+}
+
+@media print {
+    header,
+    footer,
+    .offcanvas,
+    .toast-container,
+    .admin-aside,
+    .no-imprimir {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+    }
+}

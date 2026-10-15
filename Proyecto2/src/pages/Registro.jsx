@@ -2,14 +2,15 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import CampoFormulario from '../components/CampoFormulario'
 import { useAuth } from '../context/AuthContext'
+import { useNotificacion } from '../context/NotificacionContext'
 
 const VACIO = { nombre: '', email: '', telefono: '', contrasena: '', confirmar: '' }
 
 export default function Registro() {
   const { registrar } = useAuth()
+  const { notificar } = useNotificacion()
   const navigate = useNavigate()
 
-  // Un solo estado para todo el formulario en vez de uno por campo
   const [campos, setCampos] = useState(VACIO)
   const [errores, setErrores] = useState({})
 
@@ -55,7 +56,7 @@ export default function Registro() {
       return
     }
 
-    alert(`¡Cuenta creada con éxito, ${campos.nombre}! Ya puedes iniciar sesión.`)
+    notificar(`¡Cuenta creada con éxito, ${campos.nombre}! Ya puedes iniciar sesión.`)
     navigate('/login')
   }
 

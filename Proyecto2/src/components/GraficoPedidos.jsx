@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 import Chart from 'chart.js/auto'
 
-// Gráfico de línea del panel admin (antes era un <canvas> + new Chart() en app.js)
 export default function GraficoPedidos() {
   const canvasRef = useRef(null)
 
@@ -27,7 +26,6 @@ export default function GraficoPedidos() {
       },
     })
 
-    // Al desmontar se destruye, si no Chart.js se queja de canvas ya en uso
     return () => grafico.destroy()
   }, [])
 

@@ -1,4 +1,3 @@
-// Datos del footer: arrays de objetos (antes estaban repetidos a mano en el HTML)
 const enlacesEmpresa = [
   'Quienes somos',
   'Trabaja En El Volcan',
@@ -18,7 +17,6 @@ const telefonosPedidos = [
   { etiqueta: 'Seguimiento Pedido', numero: '600 600 1313' },
 ]
 
-// Componente pequeño que RECIBE una lista por props y la dibuja
 function ListaTelefonos({ telefonos }) {
   return (
     <div className="d-flex flex-column gap-1 text-secondary-custom">
@@ -37,7 +35,6 @@ export default function Footer() {
       <div className="container pb-4">
         <div className="row g-4">
 
-          {/* Columna 1: enlaces de la empresa */}
           <div className="col-md-4">
             <h5 className="fw-bold text-white mb-3">Acerca De Gas El Volcán</h5>
             <ul className="list-unstyled text-secondary-custom mb-0">
@@ -49,7 +46,6 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Columna 2: teléfonos */}
           <div className="col-md-4">
             <h5 className="fw-bold text-white mb-3">Atención al cliente</h5>
             <ListaTelefonos telefonos={telefonosAtencion} />
@@ -57,7 +53,6 @@ export default function Footer() {
             <ListaTelefonos telefonos={telefonosPedidos} />
           </div>
 
-          {/* Columna 3: contacto */}
           <div className="col-md-4">
             <h5 className="fw-bold text-white mb-3">Contacto</h5>
             <p className="text-secondary-custom mb-1">
@@ -72,7 +67,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Sub-footer */}
       <div className="sub-footer py-3">
         <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
           <div className="small text-muted">

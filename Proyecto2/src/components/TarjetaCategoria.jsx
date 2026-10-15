@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'
 
-// Props: titulo (texto de la tarjeta) y ruta (a dónde lleva el botón)
 export default function TarjetaCategoria({ titulo, ruta }) {
   return (
     <div className="col-6 col-md-3">

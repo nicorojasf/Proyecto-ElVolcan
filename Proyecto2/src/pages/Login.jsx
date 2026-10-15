@@ -1,17 +1,20 @@
 import { useState } from 'react'
+import { Modal } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import CampoFormulario from '../components/CampoFormulario'
 import { useAuth } from '../context/AuthContext'
+import { useNotificacion } from '../context/NotificacionContext'
 
 export default function Login() {
   const { usuarios, iniciarSesion, eliminarUsuario } = useAuth()
   const navigate = useNavigate()
+  const { notificar } = useNotificacion()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errores, setErrores] = useState({})
+  const [aEliminar, setAEliminar] = useState(null)
 
-  // Al escribir en un campo se borra su error
   const cambiar = (campo, setValor) => (e) => {
     setValor(e.target.value)
     setErrores((prev) => ({ ...prev, [campo]: '' }))
@@ -29,18 +32,17 @@ export default function Login() {
 
     const resultado = iniciarSesion(email, password)
     if (!resultado.ok) {
-      alert('Credenciales incorrectas o usuario no registrado.')
+      notificar('Credenciales incorrectas o usuario no registrado.', 'danger')
       return
     }
 
-    alert(`¡Bienvenido de vuelta, ${resultado.sesion.nombre}!`)
+    notificar(`¡Bienvenido de vuelta, ${resultado.sesion.nombre}!`)
     navigate(resultado.sesion.esAdmin ? '/admin' : '/')
   }
 
-  const handleEliminar = (usuario) => {
-    if (confirm(`¿Deseas eliminar la cuenta de ${usuario.email}?`)) {
-      eliminarUsuario(usuario.email)
-    }
+  const confirmarEliminar = () => {
+    eliminarUsuario(aEliminar.email)
+    setAEliminar(null)
   }
 
   return (
@@ -48,7 +50,6 @@ export default function Login() {
       <div className="auth-container">
         <h2 className="auth-title">Iniciar Sesión</h2>
 
-        {/* Cuentas guardadas: clic para rellenar el correo, tacho para borrar */}
         {usuarios.length > 0 && (
           <div className="mb-3 text-start p-2 border rounded bg-light">
             <small className="d-block fw-bold text-muted mb-2">Cuentas registradas:</small>
@@ -69,7 +70,7 @@ export default function Login() {
                   type="button"
                   className="btn btn-sm btn-outline-danger py-0 px-1 ms-2"
                   title="Eliminar cuenta guardada"
-                  onClick={() => handleEliminar(u)}
+                  onClick={() => setAEliminar(u)}
                 >
                   <i className="bi bi-trash"></i>
                 </button>
@@ -114,6 +115,23 @@ export default function Login() {
           </Link>
         </div>
       </div>
+
+      <Modal show={aEliminar !== null} onHide={() => setAEliminar(null)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title className="h5 fw-bold">Eliminar cuenta</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Deseas eliminar la cuenta de <strong>{aEliminar?.email}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <button type="button" className="btn btn-outline-secondary rounded-pill px-3" onClick={() => setAEliminar(null)}>
+            Cancelar
+          </button>
+          <button type="button" className="btn btn-danger rounded-pill px-3" onClick={confirmarEliminar}>
+            Eliminar
+          </button>
+        </Modal.Footer>
+      </Modal>
     </main>
   )
 }

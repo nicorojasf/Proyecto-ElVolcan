@@ -1,5 +1,3 @@
-// Campo de formulario reutilizable para Login y Registro.
-// Props: id, etiqueta, error (texto o vacío) y el resto (type, placeholder, value, onChange...) va al <input>
 export default function CampoFormulario({ id, etiqueta, error, ...inputProps }) {
   return (
     <div className="form-grupo mb-3">

@@ -2,12 +2,10 @@ import { useState } from 'react'
 import { useCarrito } from '../context/CarritoContext'
 import { categorias } from '../data/productos'
 
-// Prop: producto (un objeto de productos.js)
 export default function TarjetaProducto({ producto }) {
   const { carrito, agregar, precioDe } = useCarrito()
   const [agregado, setAgregado] = useState(false)
 
-  // Datos derivados: se calculan en cada render, no se guardan en estado
   const enCarrito = carrito.find((p) => p.codigo === producto.codigo)?.cantidad || 0
   const sinStock = producto.stock === 0
   const llegoAlMaximo = enCarrito >= producto.stock
@@ -48,7 +46,6 @@ export default function TarjetaProducto({ producto }) {
           </h4>
           <small className="text-muted d-block mb-2">por {producto.unidad.toLowerCase()}</small>
 
-          {/* Aviso de stock: solo aparece cuando corresponde */}
           {pocasUnidades && (
             <span className="badge bg-warning text-dark mb-3">
               ¡Quedan solo {producto.stock}!

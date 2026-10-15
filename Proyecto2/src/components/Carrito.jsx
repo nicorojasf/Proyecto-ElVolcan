@@ -1,16 +1,23 @@
 import { Offcanvas } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
-import { registrarVenta } from '../data/adminStore'
+import { useAuth } from '../context/AuthContext'
+import { useNotificacion } from '../context/NotificacionContext'
 
 export default function Carrito({ show, onHide }) {
-  const { carrito, cambiarCantidad, vaciar, total, precioDe } = useCarrito()
+  const { carrito, cambiarCantidad, total, precioDe } = useCarrito()
+  const { sesion } = useAuth()
+  const navigate = useNavigate()
+  const { notificar } = useNotificacion()
 
-  // Suma la venta al panel de administrador, vacía el carrito y cierra el panel
-  const pagar = () => {
-    registrarVenta(carrito, precioDe)
-    vaciar()
-    alert('¡Pago realizado con éxito! Tu pedido ha sido procesado y el stock actualizado.')
+  const irAPagar = () => {
     onHide()
+    if (!sesion) {
+      notificar('Debes iniciar sesión para pagar tu pedido.', 'warning')
+      navigate('/login')
+      return
+    }
+    navigate('/checkout')
   }
 
   return (
@@ -56,9 +63,9 @@ export default function Carrito({ show, onHide }) {
                     className="btn btn-sm btn-outline-secondary py-0 px-2"
                     onClick={() => cambiarCantidad(p.codigo, 1)}
                     disabled={p.cantidad >= p.stock}
-                    >
+                  >
                     +
-                    </button>
+                  </button>
                 </div>
               </div>
             ))
@@ -73,7 +80,7 @@ export default function Carrito({ show, onHide }) {
           <button
             className="btn btn-naranja w-100 py-2 rounded-pill fw-semibold"
             disabled={carrito.length === 0}
-            onClick={pagar}
+            onClick={irAPagar}
           >
             Ir a Pagar
           </button>

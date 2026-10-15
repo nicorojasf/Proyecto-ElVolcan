@@ -1,4 +1,3 @@
-// Categorías: el 'nombre' debe coincidir EXACTO con la columna Categoría de cada producto
 export const categorias = [
   { slug: 'cilindros',   nombre: 'Cilindros de Gas',      icono: 'bi-fire' },
   { slug: 'reguladores', nombre: 'Reguladores',           icono: 'bi-speedometer2' },
@@ -7,7 +6,6 @@ export const categorias = [
 ]
 
 export const productos = [
-  // ---------- Cilindros de Gas ----------
   { codigo: 'CL001', categoria: 'Cilindros de Gas', nombre: 'Cilindro GLP 5 kg',
     descripcion: 'Cilindro de gas licuado de petróleo 5 kg. Para uso residencial (cocina, calefacción pequeña).',
     unidad: 'Unidad', precioResidencial: 6500, precioComercial: 6000, stock: 80, img: '/imagenes/c5k.png' },
@@ -21,7 +19,6 @@ export const productos = [
     descripcion: 'Cilindro industrial. Uso comercial: restaurantes, talleres, calefacción de locales.',
     unidad: 'Unidad', precioResidencial: 45000, precioComercial: 40000, stock: 30, img: '/imagenes/c45k.png' },
 
-  // ---------- Reguladores ----------
   { codigo: 'RG001', categoria: 'Reguladores', nombre: 'Regulador doméstico estándar',
     descripcion: 'Regulador de 1 etapa para cilindros 5, 11 y 15 kg. Presión de salida 28 mbar.',
     unidad: 'Unidad', precioResidencial: 8990, precioComercial: 8200, stock: 45, img: '/imagenes/rg001.png' },
@@ -32,7 +29,6 @@ export const productos = [
     descripcion: 'Permite conectar dos artefactos simultáneamente al mismo cilindro.',
     unidad: 'Unidad', precioResidencial: 14990, precioComercial: 13500, stock: 18, img: '/imagenes/rg003.png' },
 
-  // ---------- Mangueras y Conexiones ----------
   { codigo: 'MG001', categoria: 'Mangueras y Conexiones', nombre: 'Manguera gas 1.5 m',
     descripcion: 'Manguera flexible homologada. Diámetro interior 9mm. Compatible con reguladores estándar.',
     unidad: 'Unidad', precioResidencial: 3990, precioComercial: 3500, stock: 80, img: '/imagenes/mg001.png' },
@@ -46,7 +42,6 @@ export const productos = [
     descripcion: 'Todo lo necesario para instalar un cilindro nuevo.',
     unidad: 'Kit', precioResidencial: 12990, precioComercial: 11500, stock: 25, img: '/imagenes/mg004.png' },
 
-  // ---------- Accesorios ----------
   { codigo: 'AC001', categoria: 'Accesorios', nombre: 'Carro porta cilindro 11/15 kg',
     descripcion: 'Carro metálico con ruedas para transportar cilindros dentro del hogar con seguridad.',
     unidad: 'Unidad', precioResidencial: 12990, precioComercial: 11000, stock: 20, img: '/imagenes/ac001.png' },
