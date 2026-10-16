@@ -1,9 +1,11 @@
+
 import { createContext, useContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
 
 const EMAILS_ADMIN = ['admin@admin.cl', 'admin@admin.com']
+const PASSWORD_ADMIN = 'Gasvolcan26'
 
 const leer = (clave, porDefecto) => {
   try {
@@ -27,6 +29,9 @@ export function AuthProvider({ children }) {
   }, [sesion])
 
   const registrar = ({ nombre, email, telefono, password }) => {
+    if (EMAILS_ADMIN.includes(email)) {
+      return { ok: false, error: 'Este correo no está disponible para registro.' }
+    }
     if (usuarios.some((u) => u.email === email)) {
       return { ok: false, error: 'Este correo institucional ya se encuentra registrado.' }
     }
@@ -35,9 +40,13 @@ export function AuthProvider({ children }) {
   }
 
   const iniciarSesion = (email, password) => {
-    const usuario = usuarios.find((u) => u.email === email && u.password === password)
     const esAdmin = EMAILS_ADMIN.includes(email)
 
+    if (esAdmin) {
+      if (password !== PASSWORD_ADMIN) return { ok: false }
+    }
+
+    const usuario = usuarios.find((u) => u.email === email && u.password === password)
     if (!usuario && !esAdmin) return { ok: false }
 
     const nueva = {
