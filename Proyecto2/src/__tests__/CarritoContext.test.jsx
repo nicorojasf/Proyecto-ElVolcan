@@ -14,6 +14,7 @@ const renderCarrito = () =>
   renderHook(() => useCarrito(), { wrapper: CarritoProvider })
 
 describe('CarritoContext', () => {
+  
   it('no permite superar el stock disponible', () => {
     const { result } = renderCarrito()
 

@@ -13,6 +13,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 })
 
 describe('Login', () => {
+  // PRUEBA 10: login correcto, mock de useNavigate
   it('un usuario registrado inicia sesión, recibe bienvenida y va a "/"', async () => {
     localStorage.setItem(
       'usuariosRegistrados',
