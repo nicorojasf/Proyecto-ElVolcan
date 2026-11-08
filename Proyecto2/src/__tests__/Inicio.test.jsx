@@ -13,7 +13,6 @@ const renderInicio = () =>
   )
 
 describe('Inicio - formulario de pedido rápido', () => {
-  // PRUEBA 8: el input solo acepta numeros, maximo 9
   it('el input solo acepta números y máximo 9 dígitos', async () => {
     const user = userEvent.setup()
     renderInicio()
@@ -24,7 +23,6 @@ describe('Inicio - formulario de pedido rápido', () => {
     expect(input).toHaveValue('912345678')
   })
 
-  // PRUEBA 9: celular invalido muestra error
   it('muestra error si el celular es inválido', async () => {
     const user = userEvent.setup()
     renderInicio()
@@ -35,5 +33,16 @@ describe('Inicio - formulario de pedido rápido', () => {
     expect(
       screen.getByText('Ingresa un celular válido de 9 dígitos que comience con 9.')
     ).toBeInTheDocument()
+  })
+
+  it('para tanque con número válido indica llamar a Pedidos Granel', async () => {
+    const user = userEvent.setup()
+    renderInicio()
+
+    await user.click(screen.getByRole('button', { name: 'Tanque' }))
+    await user.type(screen.getByPlaceholderText('Ingresa tu número'), '912345678')
+    await user.click(screen.getByRole('button', { name: 'Pedir gas Online' }))
+
+    expect(screen.getByText(/600 600 2811/)).toBeInTheDocument()
   })
 })

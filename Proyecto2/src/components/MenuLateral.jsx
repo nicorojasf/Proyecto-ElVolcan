@@ -1,8 +1,8 @@
 import { Offcanvas } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 import { categorias } from '../data/productos'
-import { useAuth } from '../context/AuthContext'
 
+// Los 7 enlaces del menú como datos (antes eran 7 bloques HTML casi iguales)
 const items = [
   { texto: 'Todos los productos', icono: 'bi-shop', to: '/productos' },
   ...categorias.map((c) => ({
@@ -12,13 +12,9 @@ const items = [
   })),
 ]
 
+// Props: show (¿está abierto?) y onHide (función para cerrarlo)
 export default function MenuLateral({ show, onHide }) {
-  const { pathname } = useLocation()
-  const { sesion } = useAuth()
-
-  const lista = sesion?.esAdmin
-    ? [...items, { texto: 'Panel Administrador', icono: 'bi-speedometer2', to: '/admin' }]
-    : items
+  const { pathname } = useLocation()   // ruta actual, ej: "/cilindros"
 
   return (
     <Offcanvas show={show} onHide={onHide} id="offcanvasMenu">
@@ -30,7 +26,7 @@ export default function MenuLateral({ show, onHide }) {
 
       <Offcanvas.Body className="p-0">
         <div className="list-group list-group-flush menu-lateral-list">
-          {lista.map((item) => (
+          {items.map((item) => (
             <Link
               key={item.texto}
               to={item.to}

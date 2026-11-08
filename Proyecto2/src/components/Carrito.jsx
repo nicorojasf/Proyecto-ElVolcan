@@ -1,25 +1,8 @@
 import { Offcanvas } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
-import { useAuth } from '../context/AuthContext'
-import { useNotificacion } from '../context/NotificacionContext'
 
 export default function Carrito({ show, onHide }) {
   const { carrito, cambiarCantidad, total, precioDe } = useCarrito()
-  const { sesion } = useAuth()
-  const navigate = useNavigate()
-  const { notificar } = useNotificacion()
-
-  const irAPagar = () => {
-    onHide()
-    if (!sesion) {
-      notificar('Debes iniciar sesión para pagar tu pedido.', 'warning')
-      navigate('/login')
-      return
-    }
-    navigate('/checkout')
-  }
-
   return (
     <Offcanvas show={show} onHide={onHide} placement="end" id="offcanvasCarrito">
       <Offcanvas.Header closeButton className="border-bottom bg-light">
@@ -63,9 +46,9 @@ export default function Carrito({ show, onHide }) {
                     className="btn btn-sm btn-outline-secondary py-0 px-2"
                     onClick={() => cambiarCantidad(p.codigo, 1)}
                     disabled={p.cantidad >= p.stock}
-                  >
+                    >
                     +
-                  </button>
+                    </button>
                 </div>
               </div>
             ))
@@ -80,7 +63,6 @@ export default function Carrito({ show, onHide }) {
           <button
             className="btn btn-naranja w-100 py-2 rounded-pill fw-semibold"
             disabled={carrito.length === 0}
-            onClick={irAPagar}
           >
             Ir a Pagar
           </button>

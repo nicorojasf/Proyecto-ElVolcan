@@ -37,28 +37,25 @@
                     </button>
                 </div>
 
-                <!-- [DERECHA] Controles de Carrito, Mi Cuenta y Registro -->
-                <div class="d-flex align-items-end gap-3 pb-2 mb-1">
-                    <!-- Botón para desplegar el Carrito de Compras -->
+                <!-- [DERECHA] Controles dinámicos de Carrito y Sesión -->
+                <div id="header-acciones-usuario" class="d-flex align-items-end gap-3 pb-2 mb-1">
+                    <!-- Carrito -->
                     <button class="btn nav-link text-white d-flex align-items-center gap-1 p-0 border-0 shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
                         <i class="bi bi-cart3 fs-5"></i>
                         <span class="badge bg-danger rounded-pill id-cart-badge">0</span>
                     </button>
-
-                    <!-- Separador vertical decorativo -->
                     <span class="text-white-50 lh-1">|</span>
-
-                    <!-- Enlace de inicio de sesión -->
-                    <a href="login.html" class="nav-link text-white d-flex align-items-center gap-1 p-0" title="Iniciar Sesión">
-                        <i class="bi bi-person-circle fs-5"></i>
-                    </a>
-
-                    <!-- Botón destacado de Registro -->
-                    <a href="registro.html" class="btn btn-naranja btn-sm px-3 rounded-pill fw-semibold">
-                        Registrarse
-                    </a>
+                    
+                    <!-- Contenido dinámico controlado por JS (Login / Sesión Activa) -->
+                    <div id="auth-controls" class="d-flex align-items-center gap-2">
+                        <a href="login.html" class="nav-link text-white d-flex align-items-center gap-1 p-0" title="Iniciar Sesión">
+                            <i class="bi bi-person-circle fs-5"></i>
+                        </a>
+                        <a href="registro.html" class="btn btn-naranja btn-sm px-3 rounded-pill fw-semibold">
+                            Registrarse
+                        </a>
+                    </div>
                 </div>
-
             </div>
         </nav>
     </header>

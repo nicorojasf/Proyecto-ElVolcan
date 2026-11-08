@@ -25,16 +25,14 @@ const renderTarjeta = (p = producto) =>
   )
 
 describe('TarjetaProducto', () => {
- 
   it('muestra nombre y precio formateado en pesos chilenos', () => {
     renderTarjeta()
 
     expect(screen.getByText('Cilindro GLP 5 kg')).toBeInTheDocument()
-  
+    // toLocaleString('es-CL') escribe 6500 como "6.500"
     expect(screen.getByText('$6.500')).toBeInTheDocument()
   })
 
- 
   it('muestra "Agotado" y deshabilita el botón si no hay stock', () => {
     renderTarjeta({ ...producto, stock: 0 })
 
@@ -42,10 +40,9 @@ describe('TarjetaProducto', () => {
     expect(boton).toBeDisabled()
   })
 
-  
   it('al hacer clic cambia a "Máximo en carrito" cuando se alcanza el stock', async () => {
     const user = userEvent.setup()
-    renderTarjeta()   
+    renderTarjeta()   // stock = 1, así que con un clic llega al máximo
 
     await user.click(screen.getByRole('button', { name: 'Añadir al Carrito' }))
 

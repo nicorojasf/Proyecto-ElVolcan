@@ -16,6 +16,8 @@ body {
     background-color: var(--color-beige-fondo);
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     color: #91380f;
+    margin: 0;
+    padding: 0;
 }
 
 /* Inputs y cajas de texto globales */
@@ -27,6 +29,7 @@ body {
 .form-control:focus {
     outline: none;
     border-color: var(--color-naranja);
+    box-shadow: 0 0 0 0.25rem rgba(255, 87, 34, 0.25)
 }
 
 
@@ -41,16 +44,72 @@ body {
 
 /* Ajustes del logotipo en la cabecera */
 .logo-header-unico {
-    height: 65px;
+    height: 45px;
     width: auto;
     object-fit: contain;
-    margin-top: -5px;
+    padding: 0;
+    margin: 0;
     filter: brightness(0) invert(1);
 }
 
+@media (min-width: 768px) {
+    .logo-header-unico {
+        height: 55px;
+    }
+}
 
 /* ==========================================================================
-   3. BOTONES, COMPONENTES INTERACTIVOS Y BADGES (GLOBAL)
+   3. RESPONSIVE DESIGN AVANZADO (Móviles ≥360px, Tablets ≥768px, Desktops ≥1280px)
+   ========================================================================== */
+/* Contenedores generales adaptables */
+.container, .container-fluid {
+    width: 100%;
+    padding-right: var(--bs-gutter-x, 0.75rem);
+    padding-left: var(--bs-gutter-x, 0.75rem);
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Dispositivos Móviles (≥ 360px) */
+@media (max-width: 767.98px) {
+    .auth-container {
+        padding: 20px 15px !important;
+        margin: 10px;
+    }
+    
+    .banner-titulo {
+        font-size: 1.4rem !important;
+        max-width: 100% !important;
+    }
+
+    aside {
+        width: 100% !important;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Tabletas (≥ 768 px) */
+@media (min-width: 768px) and (max-width: 1279.98px) {
+    .auth-container {
+        max-width: 420px;
+    }
+}
+
+/* Computadores de Escritorio (≥ 1280 px) */
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* Tablas y elementos flexibles responsivos */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ==========================================================================
+   4. BOTONES, COMPONENTES INTERACTIVOS Y BADGES (GLOBAL)
    ========================================================================== */
 /* Utilitarios de color texto */
 .text-naranja {
@@ -111,11 +170,17 @@ body {
 
 
 /* ==========================================================================
-   4. MENÚS DESPLEGABLES / OFFCANVAS (GLOBAL)
+   5. MENÚS DESPLEGABLES / OFFCANVAS (GLOBAL)
    ========================================================================== */
 .offcanvas {
     width: 320px !important;
     background-color: #F1E8D9 !important;
+}
+
+@media (min-width: 768px) {
+    .offcanvas {
+        width: 350px !important;
+    }
 }
 
 /* Ajustes visuales para el Offcanvas de Navegación */
@@ -146,7 +211,7 @@ body {
 
 
 /* ==========================================================================
-   5. VISTA INICIO / INDEX.HTML (SECCIONES Y BANNERS)
+   6. VISTA INICIO / INDEX.HTML (SECCIONES Y BANNERS)
    ========================================================================== */
 /* Banner Principal (Hero) */
 .banner-principal {
@@ -211,7 +276,7 @@ body {
 
 
 /* ==========================================================================
-   6. VISTAS AUTENTICACIÓN / LOGIN.HTML Y REGISTRO.HTML
+   7. VISTAS AUTENTICACIÓN / LOGIN.HTML Y REGISTRO.HTML
    ========================================================================== */
 /* Envoltorio para centrar el formulario en la pantalla */
 .auth-wrapper {
@@ -238,6 +303,7 @@ body {
     color: var(--color-cafe);
     margin-bottom: 25px;
     font-size: 24px;
+    font-weight: 700;
 }
 
 .form-grupo {
@@ -262,6 +328,18 @@ body {
     margin-top: 10px;
 }
 
+.form-control.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.invalid-feedback-personalizado {
+    font-size: 0.85rem;
+    color: #dc3545;
+    margin-top: 0.3rem;
+    display: none;
+    font-weight: 600;
+}
+
 /* Enlaces pie de formulario auth */
 .auth-links {
     margin-top: 20px;
@@ -283,7 +361,7 @@ body {
 
 
 /* ==========================================================================
-   7. VISTAS CATÁLOGO / CILINDROS.HTML Y PÁGINAS SECUNDARIAS
+   8. VISTAS CATÁLOGO / CILINDROS.HTML Y PÁGINAS SECUNDARIAS
    ========================================================================== */
 /* Bloques de encabezado y migas de pan */
 .caja-breadcrumb {
@@ -344,10 +422,11 @@ body {
 
 
 /* ==========================================================================
-   8. PIE DE PÁGINA / FOOTER (GLOBAL)
+   9. PIE DE PÁGINA / FOOTER (GLOBAL)
    ========================================================================== */
 .footer-principal {
     background-color: var(--color-cafe-footer);
+    color: #ffffff;
 }
 
 .footer-principal p {
@@ -383,5 +462,8 @@ body {
 .sub-footer span,
 .sub-footer strong,
 .sub-footer i {
-    color: var(--color-cafe-footer) !important; 
+    background-color: var(--color-beige-fondo);
+    border-top: 1px solid #e9ecef;
+    color: var(--color-cafe-footer) !important;
+    font-weight: 600;
 }
