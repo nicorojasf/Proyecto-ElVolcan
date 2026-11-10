@@ -54,12 +54,15 @@ export function CarritoProvider({ children }) {
     )
   }
 
+  // Deja el carrito vacío (se usa después de una compra exitosa)
+  const vaciar = () => setCarrito([])
+
   const totalItems = carrito.reduce((acc, p) => acc + p.cantidad, 0)
   const total = carrito.reduce((acc, p) => acc + precioDe(p) * p.cantidad, 0)
 
   return (
     <CarritoContext.Provider
-      value={{ carrito, agregar, cambiarCantidad, totalItems, total, tipoCliente, setTipoCliente, precioDe }}
+      value={{ carrito, agregar, cambiarCantidad, vaciar, totalItems, total, tipoCliente, setTipoCliente, precioDe }}
     >
       {children}
     </CarritoContext.Provider>

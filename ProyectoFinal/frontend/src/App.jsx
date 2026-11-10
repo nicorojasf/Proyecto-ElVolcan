@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Inicio from './pages/Inicio'
 import Catalogo from './pages/Catalogo'
+import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
 import Admin from './pages/Admin'
@@ -16,9 +17,10 @@ export default function App() {
         <Route path="/registro" element={<Registro />} />
         <Route path="/productos" element={<Catalogo />} />
         <Route path="/productos/:slug" element={<Catalogo />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Route>
 
-      {/* Admin va aparte: tendrá su propio encabezado */}
+      {/* Admin va aparte: tiene su propio encabezado y solo entra el administrador */}
       <Route path="/admin" element={<Admin />} />
     </Routes>
   )

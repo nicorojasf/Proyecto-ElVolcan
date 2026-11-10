@@ -1,7 +1,19 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext'
+import { useNotificacion } from '../context/NotificacionContext'
 
 // Props: cantidad (número del badge), onMenu y onCarrito (funciones)
 export default function Navbar({ cantidad = 0, onMenu, onCarrito }) {
+  const { sesion, cerrarSesion } = useAuth()
+  const { notificar } = useNotificacion()
+  const navigate = useNavigate()
+
+  const salir = () => {
+    cerrarSesion()
+    notificar('Sesión cerrada correctamente.')
+    navigate('/')
+  }
+
   return (
     <header className="shadow-sm sticky-top">
       <nav className="navbar navbar-expand bg-header-principal p-0">
@@ -24,7 +36,7 @@ export default function Navbar({ cantidad = 0, onMenu, onCarrito }) {
             </button>
           </div>
 
-          {/* DERECHA: carrito, cuenta y registro */}
+          {/* DERECHA: carrito y cuenta (cambia según haya sesión o no) */}
           <div className="d-flex align-items-end gap-2 gap-sm-3 pb-2 mb-1">
             <button
               className="btn nav-link text-white d-flex align-items-center gap-1 p-0 border-0 shadow-none"
@@ -38,13 +50,37 @@ export default function Navbar({ cantidad = 0, onMenu, onCarrito }) {
             {/* El separador solo se ve en pantallas medianas y grandes */}
             <span className="text-white-50 lh-1 d-none d-sm-inline">|</span>
 
-            <Link to="/login" className="nav-link text-white d-flex align-items-center p-0" title="Iniciar Sesión">
-              <i className="bi bi-person-circle fs-5"></i>
-            </Link>
+            {sesion ? (
+              <>
+                <span className="text-white d-none d-md-inline small">
+                  Hola, {sesion.nombre.split(' ')[0]}
+                </span>
 
-            <Link to="/registro" className="btn btn-naranja btn-sm px-2 px-sm-3 rounded-pill fw-semibold boton-registro">
-              Registrarse
-            </Link>
+                {sesion.esAdmin && (
+                  <Link to="/admin" className="btn btn-naranja btn-sm px-2 px-sm-3 rounded-pill fw-semibold">
+                    Panel
+                  </Link>
+                )}
+
+                <button
+                  type="button"
+                  className="btn btn-outline-light btn-sm px-2 px-sm-3 rounded-pill fw-semibold"
+                  onClick={salir}
+                >
+                  Salir
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="nav-link text-white d-flex align-items-center p-0" title="Iniciar Sesión">
+                  <i className="bi bi-person-circle fs-5"></i>
+                </Link>
+
+                <Link to="/registro" className="btn btn-naranja btn-sm px-2 px-sm-3 rounded-pill fw-semibold boton-registro">
+                  Registrarse
+                </Link>
+              </>
+            )}
           </div>
 
         </div>

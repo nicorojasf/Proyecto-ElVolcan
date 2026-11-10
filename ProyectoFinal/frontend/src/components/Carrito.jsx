@@ -1,8 +1,16 @@
 import { Offcanvas } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
 import { useCarrito } from '../context/CarritoContext'
 
 export default function Carrito({ show, onHide }) {
   const { carrito, cambiarCantidad, total, precioDe } = useCarrito()
+  const navigate = useNavigate()
+
+  const irAPagar = () => {
+    onHide()
+    navigate('/checkout')
+  }
+
   return (
     <Offcanvas show={show} onHide={onHide} placement="end" id="offcanvasCarrito">
       <Offcanvas.Header closeButton className="border-bottom bg-light">
@@ -63,6 +71,7 @@ export default function Carrito({ show, onHide }) {
           <button
             className="btn btn-naranja w-100 py-2 rounded-pill fw-semibold"
             disabled={carrito.length === 0}
+            onClick={irAPagar}
           >
             Ir a Pagar
           </button>
