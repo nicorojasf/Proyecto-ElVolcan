@@ -1,0 +1,38 @@
+services:
+  db-usuarios:
+    image: postgres:16
+    container_name: db-usuarios
+    environment:
+      POSTGRES_DB: db_usuarios
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5433:5432"   # 5433 en tu PC para no chocar con la base de product-service (5432)
+    volumes:
+      - pgdata-usuarios:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres} -d db_usuarios"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  auth-service:
+    build: .
+    container_name: auth-service
+    ports:
+      - "8082:8082"
+    environment:
+      DB_URL: jdbc:postgresql://db-usuarios:5432/db_usuarios
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-120}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Define ADMIN_EMAIL en el archivo .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD en el archivo .env}
+      CORS_ORIGINS: http://localhost:5173
+    depends_on:
+      db-usuarios:
+        condition: service_healthy
+
+volumes:
+  pgdata-usuarios:
