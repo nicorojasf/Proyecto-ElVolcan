@@ -17,7 +17,7 @@ Mac / Linux:
 
 Para crear un pedido de verdad tienes que tener corriendo también:
 1. `product-service` en el 8081 (perfil dev, trae el catálogo cargado).
-2. `auth-service` en el 8082 (perfil dev), para obtener un token con `POST /api/auth/login`.
+2. `auth-service` en el 8082 (perfil dev), para obtener un token con `POST /api/v1/auth/login`.
 
 El perfil dev de ambos servicios usa el mismo secreto de prueba, así que el token de uno sirve en el otro.
 
@@ -29,8 +29,8 @@ El perfil dev de ambos servicios usa el mismo secreto de prueba, así que el tok
 ## Probar
 Swagger: http://localhost:8083/swagger-ui.html (botón **Authorize** para pegar el token, sin la palabra `Bearer`).
 
-1. Inicia sesión en auth-service (`POST http://localhost:8082/api/auth/login`) y copia el `token`.
-2. `POST /api/pedidos` con este cuerpo. **Solo código y cantidad**: el precio lo calcula el servidor.
+1. Inicia sesión en auth-service (`POST http://localhost:8082/api/v1/auth/login`) y copia el `token`.
+2. `POST /api/v1/pedidos` con este cuerpo. **Solo código y cantidad**: el precio lo calcula el servidor.
 
 ```json
 {
@@ -43,16 +43,16 @@ Swagger: http://localhost:8083/swagger-ui.html (botón **Authorize** para pegar 
 }
 ```
 
-Debe responder **201** con el pedido en estado `PENDIENTE`, y el stock de `CL001` baja en `GET http://localhost:8081/api/productos/CL001`.
+Debe responder **201** con el pedido en estado `PENDIENTE`, y el stock de `CL001` baja en `GET http://localhost:8081/api/v1/productos/CL001`.
 
 ## Endpoints
 | Método | Ruta | Acceso | Uso |
 |---|---|---|---|
-| POST | /api/pedidos | con sesión | Crea el pedido y descuenta el stock. Responde 201 |
-| GET | /api/pedidos/mis-pedidos | con sesión | Historial del usuario del token |
-| GET | /api/pedidos/{id} | dueño o ADMIN | Detalle de un pedido (el de otra persona da 404) |
-| GET | /api/pedidos[?estado=PENDIENTE] | ADMIN | Todos los pedidos, con filtro opcional |
-| PUT | /api/pedidos/{id}/estado | ADMIN | Body `{"estado":"CONFIRMADO"}` |
+| POST | /api/v1/pedidos | con sesión | Crea el pedido y descuenta el stock. Responde 201 |
+| GET | /api/v1/pedidos/mis-pedidos | con sesión | Historial del usuario del token |
+| GET | /api/v1/pedidos/{id} | dueño, VENDEDOR o ADMIN | Detalle de un pedido (el de otra persona da 404) |
+| GET | /api/v1/pedidos[?estado=PENDIENTE] | ADMIN o VENDEDOR | Todos los pedidos, con filtro opcional |
+| PUT | /api/v1/pedidos/{id}/estado | ADMIN | Body `{"estado":"CONFIRMADO"}` |
 
 Errores: `{timestamp, status, error, mensaje, detalles}` (mismo formato que los otros servicios).
 400 = datos inválidos o producto inexistente, 401 = token ausente/inválido, 403 = sin permisos,
@@ -79,7 +79,7 @@ Si product-service no responde al cancelar, el pedido queda `CANCELADO` y la API
 | JWT_SECRET | sí (≥ 32 caracteres) | Debe ser idéntico al de auth-service. Sin él el servicio no arranca |
 | PRODUCT_SERVICE_URL | no | URL de product-service (por defecto http://localhost:8081) |
 | DB_URL / DB_USER / DB_PASSWORD | no | Conexión a PostgreSQL |
-| CORS_ORIGINS | no | Orígenes permitidos (se quita al poner el Gateway) |
+| CORS_ORIGINS | no | Orígenes del frontend permitidos por CORS |
 
 ## Tests
 Windows: `.\mvnw.cmd test`  |  Mac / Linux: `./mvnw test`

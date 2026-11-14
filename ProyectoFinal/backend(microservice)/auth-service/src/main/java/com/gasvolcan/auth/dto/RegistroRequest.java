@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 
 /**
  * Datos de registro. No incluye el rol a propósito: toda cuenta nueva es CLIENTE.
- * Las reglas son las mismas que valida hoy el formulario de React.
+ * Las mismas reglas que valida el formulario de React.
  */
 public record RegistroRequest(
         @NotBlank(message = "Ingresa tu nombre.")

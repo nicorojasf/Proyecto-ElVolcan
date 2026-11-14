@@ -105,7 +105,7 @@ public class ProductoService {
         productoRepository.save(producto);
     }
 
-    // ---------- Stock (lo usará order-service) ----------
+    // ---------- Stock (lo usa order-service) ----------
 
     @Transactional
     public ProductoResponse descontarStock(String codigo, int cantidad) {

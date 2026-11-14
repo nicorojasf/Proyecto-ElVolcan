@@ -27,8 +27,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-postgres}
       # Exactamente el mismo valor que usa auth-service
       JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env}
-      # Mientras product-service corra aparte (otro compose o fuera de Docker). En la etapa 10
-      # se cambia por http://product-service:8081 dentro del compose único.
+      # Para correr este servicio solo, con product-service aparte. En el docker-compose de la raíz
+      # se usa http://product-service:8081 (red interna de Docker).
       PRODUCT_SERVICE_URL: ${PRODUCT_SERVICE_URL:-http://host.docker.internal:8081}
       CORS_ORIGINS: http://localhost:5173
     extra_hosts:

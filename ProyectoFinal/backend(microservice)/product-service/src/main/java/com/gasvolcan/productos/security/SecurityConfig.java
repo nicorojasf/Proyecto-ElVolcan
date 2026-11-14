@@ -65,7 +65,7 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /** Solo mientras React llame directo a este servicio. Con el Gateway, el CORS vive allá. */
+    /** CORS: permite que el frontend (React) llame directo a este servicio. */
     @Bean
     public CorsConfigurationSource corsConfigurationSource(
             @Value("${app.cors.allowed-origins}") List<String> origenes) {

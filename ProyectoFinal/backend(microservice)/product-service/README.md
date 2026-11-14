@@ -11,21 +11,23 @@ Catálogo de productos, categorías y control de stock. Puerto **8081**.
 
 ## Probar
 - Swagger: http://localhost:8081/swagger-ui.html
-- Catálogo: http://localhost:8081/api/productos
-- Por categoría: http://localhost:8081/api/productos?categoria=cilindros
-- Categorías: http://localhost:8081/api/categorias
+- Catálogo: http://localhost:8081/api/v1/productos
+- Por categoría: http://localhost:8081/api/v1/productos?categoria=cilindros
+- Categorías: http://localhost:8081/api/v1/categorias
 
 ## Endpoints
 | Método | Ruta | Uso |
 |---|---|---|
-| GET | /api/productos[?categoria=slug] | Catálogo |
-| GET | /api/productos/{codigo} | Detalle |
-| POST | /api/productos | Crear (admin) |
-| PUT | /api/productos/{codigo} | Editar (admin) |
-| DELETE | /api/productos/{codigo} | Desactivar (admin) |
-| PUT | /api/productos/{codigo}/stock/descontar | Body `{"cantidad": 2}` (order-service) |
-| PUT | /api/productos/{codigo}/stock/aumentar | Body `{"cantidad": 2}` |
-| GET | /api/categorias | Categorías |
+| GET | /api/v1/productos[?categoria=slug] | Catálogo |
+| GET | /api/v1/productos/{codigo} | Detalle |
+| POST | /api/v1/productos | Crear (admin) |
+| PUT | /api/v1/productos/{codigo} | Editar (admin) |
+| DELETE | /api/v1/productos/{codigo} | Desactivar (admin) |
+| PUT | /api/v1/productos/{codigo}/activar | Reactivar un producto desactivado (admin) |
+| GET | /api/v1/productos/desactivados | Lista de desactivados (admin) |
+| PUT | /api/v1/productos/{codigo}/stock/descontar | Body `{"cantidad": 2}` (order-service) |
+| PUT | /api/v1/productos/{codigo}/stock/aumentar | Body `{"cantidad": 2}` |
+| GET | /api/v1/categorias | Categorías |
 
 ## Tests
     mvn test
@@ -39,7 +41,7 @@ Windows (PowerShell o terminal de VS Code):
 Mac/Linux:
     ./mvnw spring-boot:run -Dspring-boot.run.profiles=dev
 
-Cuando aparezca "Catálogo inicial cargado", abre http://localhost:8081/api/productos
+Cuando aparezca "Catálogo inicial cargado", abre http://localhost:8081/api/v1/productos
 
 ## Correr sin Docker (VS Code o terminal) con base de datos en memoria
 Requiere solo Java 17 o superior (JDK). Maven viene incluido (mvnw).

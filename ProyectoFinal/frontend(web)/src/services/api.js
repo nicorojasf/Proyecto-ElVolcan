@@ -1,5 +1,5 @@
 // Direcciones de los microservicios (las ve el NAVEGADOR, por eso son localhost + puerto publicado).
-// Cuando exista el API Gateway basta con definir VITE_API_URL=http://localhost:8080 y todo pasa por él.
+// Opcional: con VITE_API_URL se apunta los 3 servicios a una sola dirección (por ejemplo un proxy).
 const GATEWAY = import.meta.env.VITE_API_URL
 const PRODUCT_URL = GATEWAY ?? import.meta.env.VITE_PRODUCT_URL ?? 'http://localhost:8081'
 const AUTH_URL = GATEWAY ?? import.meta.env.VITE_AUTH_URL ?? 'http://localhost:8082'

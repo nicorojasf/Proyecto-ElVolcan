@@ -2,7 +2,7 @@ package com.gasvolcan.pedidos.dto;
 
 import com.gasvolcan.pedidos.model.DetallePedido;
 
-/** Mismos nombres que los items que arma hoy el frontend (codigo, nombre, img, precio, cantidad, subtotal). */
+/** Mismos nombres que los items que usa el frontend (codigo, nombre, img, precio, cantidad, subtotal). */
 public record ItemResponse(
         String codigo,
         String nombre,

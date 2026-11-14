@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 /**
- * Emite el JWT. Claims que usarán el gateway y order-service:
+ * Emite el JWT. Claims que leen los demás servicios (product-service y order-service):
  * sub = email, uid = id, nombre, rol (CLIENTE | VENDEDOR | ADMIN) y tipoCliente (RESIDENCIAL | COMERCIAL).
  */
 @Service

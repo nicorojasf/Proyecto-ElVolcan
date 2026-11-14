@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Firma (HS256) y verificación de los JWT con un secreto compartido.
- * El mismo JWT_SECRET lo usará el api-gateway para validar los tokens.
+ * El mismo JWT_SECRET lo usan product-service y order-service para validar los tokens.
  */
 @Configuration
 public class JwtConfig {
