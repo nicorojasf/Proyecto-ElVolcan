@@ -82,6 +82,14 @@ public class AuthService {
         return new LoginResponse(emitido.token(), "Bearer", emitido.expiraEnSegundos(), UsuarioResponse.de(usuario));
     }
 
+    /** Renovación: el token actual ya fue validado por Spring Security; se emite uno nuevo con el rol vigente en BD. */
+    public LoginResponse renovar(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(normalizar(email))
+                .orElseThrow(() -> new NoAutorizadoException("La sesión ya no es válida."));
+        JwtService.TokenEmitido emitido = jwtService.emitir(usuario);
+        return new LoginResponse(emitido.token(), "Bearer", emitido.expiraEnSegundos(), UsuarioResponse.de(usuario));
+    }
+
     public UsuarioResponse perfil(String email) {
         return usuarioRepository.findByEmail(normalizar(email))
                 .map(UsuarioResponse::de)

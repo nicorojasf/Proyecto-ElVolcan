@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/productos")
+@RequestMapping("/api/v1/productos")
 @Tag(name = "Productos", description = "Catálogo y stock de Gas El Volcán")
 public class ProductoController {
 
@@ -29,6 +29,12 @@ public class ProductoController {
     @Operation(summary = "Listar productos activos, opcionalmente filtrando por slug de categoría")
     public List<ProductoResponse> listar(@RequestParam(required = false) String categoria) {
         return productoService.listar(categoria);
+    }
+
+    @GetMapping("/desactivados")
+    @Operation(summary = "Listar los productos desactivados (administrador)")
+    public List<ProductoResponse> desactivados() {
+        return productoService.listarDesactivados();
     }
 
     @GetMapping("/{codigo}")
@@ -58,6 +64,12 @@ public class ProductoController {
     public ResponseEntity<Void> desactivar(@PathVariable String codigo) {
         productoService.desactivar(codigo);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{codigo}/activar")
+    @Operation(summary = "Reactivar un producto desactivado: vuelve a aparecer en el catálogo (administrador)")
+    public ProductoResponse activar(@PathVariable String codigo) {
+        return productoService.activar(codigo);
     }
 
     @PutMapping("/{codigo}/stock/descontar")

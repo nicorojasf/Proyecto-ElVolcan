@@ -103,7 +103,7 @@ class PedidoControllerTest {
     /** Crea un pedido y devuelve su id. */
     private long crearPedido(String autorizacion) throws Exception {
         productoDisponible();
-        String respuesta = mockMvc.perform(post("/api/pedidos").header("Authorization", autorizacion)
+        String respuesta = mockMvc.perform(post("/api/v1/pedidos").header("Authorization", autorizacion)
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
@@ -117,7 +117,7 @@ class PedidoControllerTest {
     void crearPedido() throws Exception {
         productoDisponible();
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(101))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(101))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.estado").value("PENDIENTE"))
@@ -136,7 +136,7 @@ class PedidoControllerTest {
     void precioComercial() throws Exception {
         productoDisponible();
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", comercial(102))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", comercial(102))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.tipoCliente").value("COMERCIAL"))
@@ -148,7 +148,7 @@ class PedidoControllerTest {
     void precioDelClienteSeIgnora() throws Exception {
         productoDisponible();
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(103))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(103))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cuerpo("[{\"codigo\":\"CL001\",\"cantidad\":1,\"precio\":1}]")))
                 .andExpect(status().isCreated())
@@ -158,7 +158,7 @@ class PedidoControllerTest {
     @Test
     @DisplayName("Sin token se responde 401 y no se toca el stock")
     void sinToken() throws Exception {
-        mockMvc.perform(post("/api/pedidos").contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
+        mockMvc.perform(post("/api/v1/pedidos").contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isUnauthorized());
 
         verify(productos, never()).descontarStock(anyString(), anyInt());
@@ -167,17 +167,17 @@ class PedidoControllerTest {
     @Test
     @DisplayName("Un pedido sin productos o con datos malos da 400 con detalle por campo")
     void datosInvalidos() throws Exception {
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(104))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(104))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo("[]")))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detalles.items").exists());
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(104))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(104))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(cuerpo("[{\"codigo\":\"CL001\",\"cantidad\":0}]")))
                 .andExpect(status().isBadRequest());
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(104))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(104))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"cliente\":{\"nombre\":\"\",\"apellidos\":\"P\",\"correo\":\"malo\"},"
                                 + "\"direccion\":{\"calle\":\"ab\",\"numero\":\"x\",\"tipo\":\"casa\","
@@ -196,11 +196,11 @@ class PedidoControllerTest {
         doThrow(new StockInsuficienteException("No hay stock suficiente de CL001."))
                 .when(productos).descontarStock("CL001", 2);
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(105))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(105))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isConflict());
 
-        mockMvc.perform(get("/api/pedidos/mis-pedidos").header("Authorization", cliente(105)))
+        mockMvc.perform(get("/api/v1/pedidos/mis-pedidos").header("Authorization", cliente(105)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
@@ -210,7 +210,7 @@ class PedidoControllerTest {
     void productoInexistente() throws Exception {
         when(productos.obtener("CL001")).thenThrow(new ProductoInvalidoException("El producto CL001 no existe."));
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(106))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(106))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isBadRequest());
     }
@@ -220,7 +220,7 @@ class PedidoControllerTest {
     void productServiceCaido() throws Exception {
         when(productos.obtener("CL001")).thenThrow(new ServicioNoDisponibleException("No se pudo contactar a product-service."));
 
-        mockMvc.perform(post("/api/pedidos").header("Authorization", cliente(107))
+        mockMvc.perform(post("/api/v1/pedidos").header("Authorization", cliente(107))
                         .contentType(MediaType.APPLICATION_JSON).content(cuerpo(UN_CILINDRO)))
                 .andExpect(status().isServiceUnavailable());
     }
@@ -232,12 +232,12 @@ class PedidoControllerTest {
     void misPedidos() throws Exception {
         crearPedido(cliente(201));
 
-        mockMvc.perform(get("/api/pedidos/mis-pedidos").header("Authorization", cliente(201)))
+        mockMvc.perform(get("/api/v1/pedidos/mis-pedidos").header("Authorization", cliente(201)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1))
                 .andExpect(jsonPath("$[0].items[0].codigo").value("CL001"));
 
-        mockMvc.perform(get("/api/pedidos/mis-pedidos").header("Authorization", cliente(202)))
+        mockMvc.perform(get("/api/v1/pedidos/mis-pedidos").header("Authorization", cliente(202)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
     }
@@ -247,14 +247,14 @@ class PedidoControllerTest {
     void listaSoloAdmin() throws Exception {
         crearPedido(cliente(203));
 
-        mockMvc.perform(get("/api/pedidos").header("Authorization", cliente(203)))
+        mockMvc.perform(get("/api/v1/pedidos").header("Authorization", cliente(203)))
                 .andExpect(status().isForbidden());
-        mockMvc.perform(get("/api/pedidos").header("Authorization", admin()))
+        mockMvc.perform(get("/api/v1/pedidos").header("Authorization", admin()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
-        mockMvc.perform(get("/api/pedidos").param("estado", "PENDIENTE").header("Authorization", admin()))
+        mockMvc.perform(get("/api/v1/pedidos").param("estado", "PENDIENTE").header("Authorization", admin()))
                 .andExpect(status().isOk());
-        mockMvc.perform(get("/api/pedidos").param("estado", "NO_EXISTE").header("Authorization", admin()))
+        mockMvc.perform(get("/api/v1/pedidos").param("estado", "NO_EXISTE").header("Authorization", admin()))
                 .andExpect(status().isBadRequest());
     }
 
@@ -263,9 +263,9 @@ class PedidoControllerTest {
     void verPedido() throws Exception {
         long id = crearPedido(cliente(204));
 
-        mockMvc.perform(get("/api/pedidos/" + id).header("Authorization", cliente(204))).andExpect(status().isOk());
-        mockMvc.perform(get("/api/pedidos/" + id).header("Authorization", admin())).andExpect(status().isOk());
-        mockMvc.perform(get("/api/pedidos/" + id).header("Authorization", cliente(205))).andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/v1/pedidos/" + id).header("Authorization", cliente(204))).andExpect(status().isOk());
+        mockMvc.perform(get("/api/v1/pedidos/" + id).header("Authorization", admin())).andExpect(status().isOk());
+        mockMvc.perform(get("/api/v1/pedidos/" + id).header("Authorization", cliente(205))).andExpect(status().isNotFound());
     }
 
     // ---------- estados ----------
@@ -275,16 +275,16 @@ class PedidoControllerTest {
     void cambiarEstado() throws Exception {
         long id = crearPedido(cliente(301));
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CONFIRMADO\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("CONFIRMADO"));
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"ENTREGADO\"}"))
                 .andExpect(status().isConflict());
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"EN_CAMINO\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("EN_CAMINO"));
@@ -295,7 +295,7 @@ class PedidoControllerTest {
     void clienteNoCambiaEstado() throws Exception {
         long id = crearPedido(cliente(302));
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", cliente(302))
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", cliente(302))
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CONFIRMADO\"}"))
                 .andExpect(status().isForbidden());
     }
@@ -305,14 +305,14 @@ class PedidoControllerTest {
     void cancelar() throws Exception {
         long id = crearPedido(cliente(303));
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CANCELADO\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.estado").value("CANCELADO"));
 
         verify(productos).aumentarStock("CL001", 2);
 
-        mockMvc.perform(put("/api/pedidos/" + id + "/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CANCELADO\"}"))
                 .andExpect(status().isConflict());
     }
@@ -320,8 +320,24 @@ class PedidoControllerTest {
     @Test
     @DisplayName("Cambiar el estado de un pedido que no existe da 404")
     void estadoDePedidoInexistente() throws Exception {
-        mockMvc.perform(put("/api/pedidos/999999/estado").header("Authorization", admin())
+        mockMvc.perform(put("/api/v1/pedidos/999999/estado").header("Authorization", admin())
                         .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CONFIRMADO\"}"))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @DisplayName("El VENDEDOR ve la lista y el detalle de cualquier pedido, pero no puede cambiar su estado")
+    void vendedorSoloLectura() throws Exception {
+        long id = crearPedido(cliente(401));
+        String vendedor = "Bearer " + token(9100, "VENDEDOR", "COMERCIAL");
+
+        mockMvc.perform(get("/api/v1/pedidos").header("Authorization", vendedor))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray());
+        mockMvc.perform(get("/api/v1/pedidos/" + id).header("Authorization", vendedor))
+                .andExpect(status().isOk());
+        mockMvc.perform(put("/api/v1/pedidos/" + id + "/estado").header("Authorization", vendedor)
+                        .contentType(MediaType.APPLICATION_JSON).content("{\"estado\":\"CONFIRMADO\"}"))
+                .andExpect(status().isForbidden());
     }
 }

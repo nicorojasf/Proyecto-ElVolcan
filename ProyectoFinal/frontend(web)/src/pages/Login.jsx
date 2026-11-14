@@ -18,7 +18,7 @@ export default function Login() {
     setErrores((prev) => ({ ...prev, [name]: '' }))
   }
 
-  const enviar = (e) => {
+  const enviar = async (e) => {
     e.preventDefault()
 
     const email = campos.email.trim().toLowerCase()
@@ -28,15 +28,21 @@ export default function Login() {
     setErrores(nuevos)
     if (Object.keys(nuevos).length > 0) return
 
-    const resultado = iniciarSesion(email, campos.password)
+    const resultado = await iniciarSesion(email, campos.password)
     if (!resultado.ok) {
-      notificar('Correo o contraseña incorrectos.', 'danger')
+      // 401 = credenciales malas; cualquier otro error (red, servidor) se muestra tal cual
+      notificar(
+        resultado.status === 401 || resultado.status === 400
+          ? 'Correo o contraseña incorrectos.'
+          : resultado.error,
+        'danger'
+      )
       return
     }
 
     const primerNombre = resultado.sesion.nombre.split(' ')[0]
     notificar(`¡Bienvenido de vuelta, ${primerNombre}!`)
-    navigate(resultado.sesion.esAdmin ? '/admin' : '/')
+    navigate(resultado.sesion.esAdmin || resultado.sesion.esVendedor ? '/admin' : '/')
   }
 
   return (

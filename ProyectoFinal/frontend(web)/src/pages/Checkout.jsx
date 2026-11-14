@@ -6,7 +6,8 @@ import { useCarrito } from '../context/CarritoContext'
 import { useAuth } from '../context/AuthContext'
 import { useNotificacion } from '../context/NotificacionContext'
 import { normalizarDireccion, validarCliente, validarDireccion } from '../data/direccion'
-import { armarItems, procesarPago } from '../data/pedidosStore'
+import { armarItems } from '../data/pedidosStore'
+import { crearPedido } from '../services/api'
 
 function valoresIniciales(sesion, usuarioActual) {
   const [nombre = '', ...resto] = (sesion?.nombre || '').split(' ')
@@ -53,12 +54,13 @@ function CajaTotal({ texto, total }) {
 
 export default function Checkout() {
   const { carrito, total, precioDe, vaciar } = useCarrito()
-  const { sesion, usuarioActual, guardarDireccion } = useAuth()
+  const { sesion, usuarioActual, guardarDireccion, cerrarSesion } = useAuth()
   const { notificar } = useNotificacion()
 
   const [campos, setCampos] = useState(() => valoresIniciales(sesion, usuarioActual))
   const [errores, setErrores] = useState({})
   const [orden, setOrden] = useState(null)
+  const [enviando, setEnviando] = useState(false)
 
   if (!sesion) return <Navigate to="/login" replace />
 
@@ -78,23 +80,47 @@ export default function Checkout() {
     setErrores((prev) => ({ ...prev, depto: '' }))
   }
 
-  const pagar = () => {
+  // Envía solo código y cantidad: order-service recalcula el precio, descuenta el stock y devuelve el pedido.
+  const pagar = async () => {
     const nuevos = { ...validarCliente(campos), ...validarDireccion(campos) }
     setErrores(nuevos)
     if (Object.keys(nuevos).length > 0) return
 
     const { cliente, direccion } = separar(campos)
-    const resultado = procesarPago({ carrito, precioDe, cliente, direccion, email: sesion.email })
-
-    if (resultado.estado === 'pagado') {
+    const items = armarItems(carrito, precioDe)
+    setEnviando(true)
+    try {
+      const pedido = await crearPedido({
+        cliente,
+        direccion,
+        items: carrito.map((p) => ({ codigo: p.codigo, cantidad: p.cantidad })),
+      })
       guardarDireccion(sesion.email, direccion)
       vaciar()
+      setOrden({ ...pedido, exito: true })
+    } catch (e) {
+      if (e.status === 401) {
+        // El token venció: al cerrar la sesión, este componente redirige solo al login
+        cerrarSesion()
+        notificar('Tu sesión expiró. Inicia sesión nuevamente.', 'warning')
+        return
+      }
+      setOrden({
+        exito: false,
+        numero: '—',
+        motivo: e.message,
+        cliente,
+        direccion,
+        items,
+        total: items.reduce((acc, i) => acc + i.subtotal, 0),
+      })
+    } finally {
+      setEnviando(false)
     }
-    setOrden(resultado)
   }
 
   if (orden) {
-    const exito = orden.estado === 'pagado'
+    const exito = orden.exito
 
     return (
       <Pagina>
@@ -174,8 +200,8 @@ export default function Checkout() {
         <CajaTotal texto="Total a pagar" total={total} />
 
         <div className="d-grid gap-2">
-          <button type="submit" className="btn btn-naranja py-2 rounded-pill fw-semibold">
-            Confirmar y pagar
+          <button type="submit" disabled={enviando} className="btn btn-naranja py-2 rounded-pill fw-semibold">
+            {enviando ? 'Procesando...' : 'Confirmar y pagar'}
           </button>
           <Link to="/productos" className="btn btn-outline-secondary py-2 rounded-pill">
             Seguir comprando

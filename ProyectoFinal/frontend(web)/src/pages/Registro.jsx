@@ -23,7 +23,7 @@ export default function Registro() {
   const navigate = useNavigate()
 
   const [campos, setCampos] = useState({
-    nombre: '', email: '', telefono: '', password: '', repetir: '',
+    nombre: '', email: '', telefono: '', password: '', repetir: '', tipoCliente: 'RESIDENCIAL',
   })
   const [errores, setErrores] = useState({})
 
@@ -35,18 +35,19 @@ export default function Registro() {
     setErrores((prev) => ({ ...prev, [name]: '' }))
   }
 
-  const enviar = (e) => {
+  const enviar = async (e) => {
     e.preventDefault()
 
     const nuevos = validar(campos)
     setErrores(nuevos)
     if (Object.keys(nuevos).length > 0) return
 
-    const resultado = registrar({
+    const resultado = await registrar({
       nombre: campos.nombre.trim(),
       email: campos.email.trim().toLowerCase(),
       telefono: campos.telefono,
       password: campos.password,
+      tipoCliente: campos.tipoCliente,
     })
 
     if (!resultado.ok) {
@@ -110,6 +111,35 @@ export default function Registro() {
             error={errores.repetir}
             autoComplete="new-password"
           />
+
+          <div className="mb-3">
+
+            <label htmlFor="tipoCliente" className="form-letra">Tipo de cuenta</label>
+
+            <select
+
+              id="tipoCliente"
+
+              name="tipoCliente"
+
+              className="form-select"
+
+              value={campos.tipoCliente}
+
+              onChange={cambiar}
+
+            >
+
+              <option value="RESIDENCIAL">Residencial (hogar)</option>
+
+              <option value="COMERCIAL">Comercial (negocio)</option>
+
+            </select>
+
+            <div className="form-text">Define los precios que verás y pagarás en la tienda.</div>
+
+          </div>
+
 
           <div className="d-grid mt-4">
             <button type="submit" className="btn btn-naranja rounded-pill fw-semibold py-2">

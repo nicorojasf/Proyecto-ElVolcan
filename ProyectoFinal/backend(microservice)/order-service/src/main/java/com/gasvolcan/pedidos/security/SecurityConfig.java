@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
-        // El claim "rol" (CLIENTE | ADMIN) se convierte en la autoridad ROLE_CLIENTE / ROLE_ADMIN
+        // El claim "rol" (CLIENTE | VENDEDOR | ADMIN) se convierte en la autoridad ROLE_CLIENTE / ROLE_ADMIN
         JwtGrantedAuthoritiesConverter autoridades = new JwtGrantedAuthoritiesConverter();
         autoridades.setAuthoritiesClaimName("rol");
         autoridades.setAuthorityPrefix("ROLE_");
@@ -39,10 +39,10 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/pedidos").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/pedidos/*/estado").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/pedidos").hasAnyRole("ADMIN", "VENDEDOR")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/pedidos/*/estado").hasRole("ADMIN")
                         // crear, mis-pedidos y ver un pedido: cualquier usuario con sesión
-                        // (en "ver un pedido" el servicio comprueba que sea suyo o que sea admin)
+                        // (en "ver un pedido" el servicio comprueba que sea suyo, admin o vendedor)
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> {
                     oauth.jwt(jwt -> jwt.decoder(jwtDecoder).jwtAuthenticationConverter(convertidor));

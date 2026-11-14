@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.gasvolcan.auth.service.AuthServiceTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.276 s -- in com.gasvolcan.auth.service.AuthServiceTest

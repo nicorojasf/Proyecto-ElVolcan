@@ -56,7 +56,7 @@ export default function Navbar({ cantidad = 0, onMenu, onCarrito }) {
                   Hola, {sesion.nombre.split(' ')[0]}
                 </span>
 
-                {sesion.esAdmin && (
+                {(sesion.esAdmin || sesion.esVendedor) && (
                   <Link to="/admin" className="btn btn-naranja btn-sm px-2 px-sm-3 rounded-pill fw-semibold">
                     Panel
                   </Link>

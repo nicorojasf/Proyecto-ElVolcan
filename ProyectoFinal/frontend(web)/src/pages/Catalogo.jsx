@@ -7,7 +7,7 @@ import TarjetaProducto from '../components/TarjetaProducto'
 
 export default function Catalogo() {
   const { slug } = useParams()   // lee la parte variable de la URL: /productos/:slug
-  const { tipoCliente, setTipoCliente } = useCarrito()
+  const { tipoVista, setTipoVista, vistaBloqueada, esPersonal } = useCarrito()
 
   // ESTADOS de la carga de productos desde el backend
   const [lista, setLista] = useState([])
@@ -76,7 +76,9 @@ export default function Catalogo() {
       <div className="caja-titulo-pagina p-4 mb-4">
         <h2 className="fw-bold mb-1">{titulo}</h2>
         <p className="text-secondary m-0">
-          Mostrando precios para cliente <strong>{tipoCliente}</strong>.
+          Mostrando precios para cliente <strong>{tipoVista}</strong>.
+          {vistaBloqueada && ' Son los que corresponden a tu cuenta.'}
+          {esPersonal && ' Vista del personal: puedes comparar ambos precios (tus compras se cobran como comercial).'}
         </p>
       </div>
 
@@ -107,9 +109,11 @@ export default function Catalogo() {
             <button
               key={t}
               className={`btn btn-selector btn-sm rounded-pill px-3 text-capitalize ${
-                tipoCliente === t ? 'active' : ''
+                tipoVista === t ? 'active' : ''
               }`}
-              onClick={() => setTipoCliente(t)}
+              onClick={() => setTipoVista(t)}
+              disabled={vistaBloqueada}
+              title={vistaBloqueada ? 'Los precios dependen del tipo de tu cuenta' : undefined}
             >
               {t}
             </button>

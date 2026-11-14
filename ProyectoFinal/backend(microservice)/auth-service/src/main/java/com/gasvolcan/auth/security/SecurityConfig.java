@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
-        // El claim "rol" (CLIENTE | ADMIN) se convierte en la autoridad ROLE_CLIENTE / ROLE_ADMIN
+        // El claim "rol" (CLIENTE | VENDEDOR | ADMIN) se convierte en la autoridad ROLE_CLIENTE / ROLE_ADMIN
         JwtGrantedAuthoritiesConverter autoridades = new JwtGrantedAuthoritiesConverter();
         autoridades.setAuthoritiesClaimName("rol");
         autoridades.setAuthorityPrefix("ROLE_");
@@ -45,10 +45,10 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/auth/registro", "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/auth/registro", "/api/v1/auth/login").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/auth/usuarios").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/auth/usuarios/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/auth/usuarios").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/auth/usuarios/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth -> {
                     oauth.jwt(jwt -> jwt.decoder(jwtDecoder).jwtAuthenticationConverter(convertidor));

@@ -14,7 +14,7 @@ import java.time.Instant;
 
 /**
  * Emite el JWT. Claims que usarán el gateway y order-service:
- * sub = email, uid = id, nombre, rol (CLIENTE | ADMIN) y tipoCliente (RESIDENCIAL | COMERCIAL).
+ * sub = email, uid = id, nombre, rol (CLIENTE | VENDEDOR | ADMIN) y tipoCliente (RESIDENCIAL | COMERCIAL).
  */
 @Service
 public class JwtService {

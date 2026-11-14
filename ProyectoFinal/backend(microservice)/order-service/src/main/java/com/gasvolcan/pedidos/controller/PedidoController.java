@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pedidos")
+@RequestMapping("/api/v1/pedidos")
 @Tag(name = "Pedidos", description = "Compras de Gas El Volcán")
 public class PedidoController {
 
@@ -48,13 +48,13 @@ public class PedidoController {
         return pedidoService.misPedidos(UsuarioActual.de(jwt));
     }
 
-    @Operation(summary = "Todos los pedidos, opcionalmente filtrados por estado (solo ADMIN)")
+    @Operation(summary = "Todos los pedidos, opcionalmente filtrados por estado (ADMIN o VENDEDOR)")
     @GetMapping
     public List<PedidoResponse> listar(@RequestParam(required = false) EstadoPedido estado) {
         return pedidoService.listar(estado);
     }
 
-    @Operation(summary = "Detalle de un pedido: el dueño o un ADMIN")
+    @Operation(summary = "Detalle de un pedido: el dueño, un VENDEDOR o un ADMIN")
     @GetMapping("/{id}")
     public PedidoResponse obtener(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         return pedidoService.obtener(id, UsuarioActual.de(jwt));

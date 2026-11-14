@@ -1,6 +1,4 @@
-import { formatearDireccion, normalizarDireccion } from '../../data/direccion'
-
-export default function Usuarios({ usuarios }) {
+export default function Usuarios({ usuarios, miEmail, onEliminar }) {
   if (usuarios.length === 0) {
     return <p className="bg-white rounded-4 shadow-sm p-4 text-muted mb-0">Aún no hay usuarios registrados.</p>
   }
@@ -14,16 +12,30 @@ export default function Usuarios({ usuarios }) {
               <th>Nombre</th>
               <th>Correo</th>
               <th>Teléfono</th>
-              <th>Dirección guardada</th>
+              <th>Rol</th>
+              <th>Tipo de cliente</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {usuarios.map((u) => (
-              <tr key={u.email}>
+              <tr key={u.id}>
                 <td>{u.nombre}</td>
                 <td>{u.email}</td>
                 <td>{u.telefono}</td>
-                <td>{u.direccion ? formatearDireccion(normalizarDireccion(u.direccion)) : '—'}</td>
+                <td>{u.rol}</td>
+                <td>{u.tipoCliente}</td>
+                <td className="text-end">
+                  {u.email !== miEmail && (
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger btn-sm"
+                      onClick={() => onEliminar(u)}
+                    >
+                      Eliminar
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

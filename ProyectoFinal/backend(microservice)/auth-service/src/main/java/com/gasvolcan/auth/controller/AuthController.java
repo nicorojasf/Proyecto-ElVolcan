@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/v1/auth")
 @Tag(name = "Autenticación")
 public class AuthController {
 
@@ -44,6 +44,12 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse login(@Valid @RequestBody LoginRequest request) {
         return authService.login(request);
+    }
+
+    @Operation(summary = "Renueva el token: con un JWT vigente entrega uno nuevo (sesión deslizante)")
+    @PostMapping("/refresh")
+    public LoginResponse refresh(@AuthenticationPrincipal Jwt jwt) {
+        return authService.renovar(jwt.getSubject());
     }
 
     @Operation(summary = "Datos del usuario dueño del token (incluye tipo de cliente)")

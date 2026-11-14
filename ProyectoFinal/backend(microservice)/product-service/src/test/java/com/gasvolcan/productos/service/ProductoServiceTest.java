@@ -125,4 +125,27 @@ class ProductoServiceTest {
         assertEquals(false, p.getActivo());
         verify(productoRepository).save(p);
     }
+
+    @Test
+    @DisplayName("activar: marca activo=true y devuelve el producto")
+    void activarReviveElProducto() {
+        Producto p = producto(10);
+        p.setActivo(false);
+        when(productoRepository.findByCodigo("CL002")).thenReturn(Optional.of(p));
+        when(productoRepository.save(p)).thenReturn(p);
+
+        ProductoResponse resp = productoService.activar("CL002");
+
+        assertEquals(true, p.getActivo());
+        assertEquals("CL002", resp.codigo());
+    }
+
+    @Test
+    @DisplayName("activar: lanza RecursoNoEncontrado si el código no existe")
+    void activarInexistente() {
+        when(productoRepository.findByCodigo("XX999")).thenReturn(Optional.empty());
+
+        assertThrows(RecursoNoEncontradoException.class, () -> productoService.activar("XX999"));
+        verify(productoRepository, never()).save(any());
+    }
 }

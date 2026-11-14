@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom'
 import GraficoPedidos from '../../components/GraficoPedidos'
-import { productos } from '../../data/productos'
+import { esVenta } from '../../data/metricas'
 import { KpiColor, TarjetaKpi } from './Tarjetas'
 import { vistas, tienda } from './vistas'
 
-export default function Dashboard({ datos, pedidos, usuarios, onIr }) {
-  const pagados = pedidos.filter((p) => p.estado === 'pagado')
+export default function Dashboard({ datos, pedidos, usuarios, productos, onIr }) {
+  const pagados = pedidos.filter(esVenta)
   const ingresos = pagados.reduce((acc, p) => acc + p.total, 0)
   const stockCatalogo = productos.reduce((acc, p) => acc + p.stock, 0)
-  const conDireccion = usuarios.filter((u) => u.direccion).length
+  const clientes = usuarios.filter((u) => u.rol === 'CLIENTE').length
 
   const claseTarjeta = 'card h-100 w-100 border-0 shadow-sm rounded-4 p-3 text-center text-dark text-decoration-none tarjeta-categoria'
 
@@ -20,7 +20,7 @@ export default function Dashboard({ datos, pedidos, usuarios, onIr }) {
         <KpiColor titulo="Productos" valor={productos.length} icono="bi-box-seam" color="success"
           detalle={`Unidades en catálogo: ${stockCatalogo}`} />
         <KpiColor titulo="Usuarios" valor={usuarios.length} icono="bi-people-fill" color="warning"
-          detalle={`Con dirección guardada: ${conDireccion}`} />
+          detalle={`Clientes registrados: ${clientes}`} />
       </div>
 
       <div className="row g-3 mb-4">

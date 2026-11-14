@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.gasvolcan.auth.controller.AuthControllerTest
+-------------------------------------------------------------------------------
+Tests run: 16, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 15.46 s -- in com.gasvolcan.auth.controller.AuthControllerTest

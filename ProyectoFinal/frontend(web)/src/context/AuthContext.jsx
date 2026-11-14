@@ -1,11 +1,8 @@
-
 import { createContext, useContext, useEffect, useState } from 'react'
+import { borrarToken, login, registrarUsuario, renovarToken } from '../services/api'
 
 const AuthContext = createContext()
 export const useAuth = () => useContext(AuthContext)
-
-const EMAILS_ADMIN = ['admin@admin.cl', 'admin@admin.com']
-const PASSWORD_ADMIN = 'Gasvolcan26'
 
 const leer = (clave, porDefecto) => {
   try {
@@ -15,65 +12,98 @@ const leer = (clave, porDefecto) => {
   }
 }
 
+// El backend (auth-service) no guarda la dirección de entrega, así que se recuerda aquí por correo.
+const leerDirecciones = () => leer('direccionesGuardadas', {})
+
+// Arma el objeto de sesión que se guarda en localStorage a partir de la respuesta del backend.
+// Roles: CLIENTE (solo tienda), VENDEDOR (solo ve productos y órdenes) y ADMIN (todo).
+const armarSesion = (usuario, expiraEnSegundos) => ({
+  expira: Date.now() + (expiraEnSegundos ?? 0) * 1000,
+  id: usuario.id,
+  nombre: usuario.nombre,
+  email: usuario.email,
+  rol: usuario.rol,
+  esAdmin: usuario.rol === 'ADMIN',
+  esVendedor: usuario.rol === 'VENDEDOR',
+  tipoCliente: usuario.tipoCliente,
+})
+
+// Faltan estos milisegundos para que venza el token cuando se pide la renovación.
+const MARGEN_RENOVACION = 60 * 1000
+
 export function AuthProvider({ children }) {
-  const [usuarios, setUsuarios] = useState(() => leer('usuariosRegistrados', []))
-  const [sesion, setSesion] = useState(() => leer('sesionActiva', null))
+  // Una sesión guardada solo se restaura si su token sigue vigente; la validación real la hace el backend.
+  const [sesion, setSesion] = useState(() => {
+    const guardada = leer('sesionActiva', null)
+    return guardada?.expira && guardada.expira > Date.now() ? guardada : null
+  })
+  const [direcciones, setDirecciones] = useState(leerDirecciones)
 
   useEffect(() => {
-    localStorage.setItem('usuariosRegistrados', JSON.stringify(usuarios))
-  }, [usuarios])
-
-  useEffect(() => {
-    if (sesion) localStorage.setItem('sesionActiva', JSON.stringify(sesion))
-    else localStorage.removeItem('sesionActiva')
+    try {
+      if (sesion) localStorage.setItem('sesionActiva', JSON.stringify(sesion))
+      else localStorage.removeItem('sesionActiva')
+    } catch { /* sin storage */ }
   }, [sesion])
 
-  const registrar = ({ nombre, email, telefono, password }) => {
-    if (EMAILS_ADMIN.includes(email)) {
-      return { ok: false, error: 'Este correo no está disponible para registro.' }
+  useEffect(() => {
+    try {
+      localStorage.setItem('direccionesGuardadas', JSON.stringify(direcciones))
+    } catch { /* sin storage */ }
+  }, [direcciones])
+
+  // Crea una cuenta CLIENTE en auth-service. Devuelve { ok } o { ok: false, error }.
+  const registrar = async ({ nombre, email, telefono, password, tipoCliente }) => {
+    try {
+      await registrarUsuario({ nombre, email, telefono, password, tipoCliente })
+      return { ok: true }
+    } catch (e) {
+      return { ok: false, error: e.message }
     }
-    if (usuarios.some((u) => u.email === email)) {
-      return { ok: false, error: 'Este correo institucional ya se encuentra registrado.' }
-    }
-    setUsuarios((prev) => [...prev, { nombre, email, telefono, password }])
-    return { ok: true }
   }
 
-  const iniciarSesion = (email, password) => {
-    const esAdmin = EMAILS_ADMIN.includes(email)
-
-    if (esAdmin) {
-      if (password !== PASSWORD_ADMIN) return { ok: false }
+  // Valida credenciales en auth-service; el JWT queda guardado para las llamadas a los otros servicios.
+  const iniciarSesion = async (email, password) => {
+    try {
+      const { usuario, expiraEnSegundos } = await login(email, password)
+      const nueva = armarSesion(usuario, expiraEnSegundos)
+      setSesion(nueva)
+      return { ok: true, sesion: nueva }
+    } catch (e) {
+      return { ok: false, error: e.message, status: e.status }
     }
-
-    const usuario = usuarios.find((u) => u.email === email && u.password === password)
-    if (!usuario && !esAdmin) return { ok: false }
-
-    const nueva = {
-      nombre: esAdmin ? 'Administrador' : usuario.nombre,
-      email,
-      esAdmin,
-    }
-    setSesion(nueva)
-    return { ok: true, sesion: nueva }
   }
 
-  const cerrarSesion = () => setSesion(null)
+  const cerrarSesion = () => {
+    borrarToken()
+    setSesion(null)
+  }
 
-  const eliminarUsuario = (email) =>
-    setUsuarios((prev) => prev.filter((u) => u.email !== email))
+  // Renovación automática: poco antes de vencer pide un token nuevo; si el backend lo rechaza, cierra la sesión.
+  const expira = sesion?.expira
+  useEffect(() => {
+    if (!expira) return
+    const espera = Math.max(expira - MARGEN_RENOVACION - Date.now(), 0)
+    const temporizador = setTimeout(async () => {
+      try {
+        const { usuario, expiraEnSegundos } = await renovarToken()
+        setSesion(armarSesion(usuario, expiraEnSegundos))
+      } catch {
+        borrarToken()
+        setSesion(null)
+      }
+    }, espera)
+    return () => clearTimeout(temporizador)
+  }, [expira])
 
   const guardarDireccion = (email, direccion) =>
-    setUsuarios((prev) => prev.map((u) => (u.email === email ? { ...u, direccion } : u)))
+    setDirecciones((prev) => ({ ...prev, [email]: direccion }))
 
-  const usuarioActual = usuarios.find((u) => u.email === sesion?.email)
+  const usuarioActual = sesion ? { ...sesion, direccion: direcciones[sesion.email] } : undefined
 
   return (
     <AuthContext.Provider
-      value={{
-        usuarios, sesion, usuarioActual,
-        registrar, iniciarSesion, cerrarSesion, eliminarUsuario, guardarDireccion,
-      }}
+      value={{ sesion, usuarioActual, registrar, iniciarSesion, cerrarSesion, guardarDireccion }}
     >
       {children}
     </AuthContext.Provider>

@@ -1,0 +1,3 @@
+com\gasvolcan\auth\service\AuthServiceTest.class
+com\gasvolcan\auth\controller\AuthControllerTest.class
+com\gasvolcan\auth\security\JwtServiceTest.class

@@ -33,13 +33,13 @@ class AuthControllerTest {
     }
 
     private void registrar(String email) throws Exception {
-        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRegistro(email, "")))
                 .andExpect(status().isCreated());
     }
 
     private String login(String email, String password) throws Exception {
-        String cuerpo = mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+        String cuerpo = mockMvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"" + email + "\",\"password\":\"" + password + "\"}"))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
@@ -49,7 +49,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("Registro devuelve 201, rol CLIENTE y nunca expone la contraseña")
     void registroOk() throws Exception {
-        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRegistro("registro.ok@correo.cl", ",\"tipoCliente\":\"COMERCIAL\"")))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.email").value("registro.ok@correo.cl"))
@@ -62,7 +62,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("No se puede registrar un ADMIN enviando el rol en el cuerpo")
     void registroIgnoraRol() throws Exception {
-        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRegistro("intento.admin@correo.cl", ",\"rol\":\"ADMIN\"")))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.rol").value("CLIENTE"));
@@ -72,7 +72,7 @@ class AuthControllerTest {
     @DisplayName("Registro con correo repetido devuelve 409")
     void registroDuplicado() throws Exception {
         registrar("duplicado@correo.cl");
-        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRegistro("DUPLICADO@correo.cl", "")))
                 .andExpect(status().isConflict());
     }
@@ -80,7 +80,7 @@ class AuthControllerTest {
     @Test
     @DisplayName("Registro con datos inválidos devuelve 400 con detalle por campo")
     void registroInvalido() throws Exception {
-        mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"nombre\":\"A\",\"email\":\"no-es-correo\",\"telefono\":\"123\",\"password\":\"123\"}"))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.detalles.email").exists())
@@ -92,7 +92,7 @@ class AuthControllerTest {
     @DisplayName("Login con clave incorrecta devuelve 401")
     void loginIncorrecto() throws Exception {
         registrar("login.malo@correo.cl");
-        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"login.malo@correo.cl\",\"password\":\"incorrecta\"}"))
                 .andExpect(status().isUnauthorized());
     }
@@ -103,7 +103,7 @@ class AuthControllerTest {
         registrar("perfil@correo.cl");
         String token = login("perfil@correo.cl", CLAVE);
 
-        mockMvc.perform(get("/api/auth/perfil").header("Authorization", "Bearer " + token))
+        mockMvc.perform(get("/api/v1/auth/perfil").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("perfil@correo.cl"))
                 .andExpect(jsonPath("$.tipoCliente").value("RESIDENCIAL"));
@@ -112,8 +112,8 @@ class AuthControllerTest {
     @Test
     @DisplayName("Perfil sin token o con token falso devuelve 401")
     void perfilSinToken() throws Exception {
-        mockMvc.perform(get("/api/auth/perfil")).andExpect(status().isUnauthorized());
-        mockMvc.perform(get("/api/auth/perfil").header("Authorization", "Bearer token.falso.xyz"))
+        mockMvc.perform(get("/api/v1/auth/perfil")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/v1/auth/perfil").header("Authorization", "Bearer token.falso.xyz"))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -122,11 +122,11 @@ class AuthControllerTest {
     void listaSoloAdmin() throws Exception {
         registrar("cliente.lista@correo.cl");
         String tokenCliente = login("cliente.lista@correo.cl", CLAVE);
-        mockMvc.perform(get("/api/auth/usuarios").header("Authorization", "Bearer " + tokenCliente))
+        mockMvc.perform(get("/api/v1/auth/usuarios").header("Authorization", "Bearer " + tokenCliente))
                 .andExpect(status().isForbidden());
 
         String tokenAdmin = login("admin@admin.cl", "Gasvolcan26");
-        mockMvc.perform(get("/api/auth/usuarios").header("Authorization", "Bearer " + tokenAdmin))
+        mockMvc.perform(get("/api/v1/auth/usuarios").header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
@@ -134,14 +134,14 @@ class AuthControllerTest {
     @Test
     @DisplayName("El admin inicial queda con rol ADMIN")
     void adminInicial() throws Exception {
-        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"admin@admin.cl\",\"password\":\"Gasvolcan26\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.usuario.rol").value("ADMIN"));
     }
 
     private long registrarYObtenerId(String email) throws Exception {
-        String cuerpo = mockMvc.perform(post("/api/auth/registro").contentType(MediaType.APPLICATION_JSON)
+        String cuerpo = mockMvc.perform(post("/api/v1/auth/registro").contentType(MediaType.APPLICATION_JSON)
                         .content(jsonRegistro(email, "")))
                 .andExpect(status().isCreated())
                 .andReturn().getResponse().getContentAsString();
@@ -149,7 +149,7 @@ class AuthControllerTest {
     }
 
     private long idDe(String token) throws Exception {
-        String cuerpo = mockMvc.perform(get("/api/auth/perfil").header("Authorization", "Bearer " + token))
+        String cuerpo = mockMvc.perform(get("/api/v1/auth/perfil").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
         return ((Number) JsonPath.read(cuerpo, "$.id")).longValue();
@@ -161,10 +161,10 @@ class AuthControllerTest {
         long id = registrarYObtenerId("a.eliminar@correo.cl");
         String tokenAdmin = login("admin@admin.cl", "Gasvolcan26");
 
-        mockMvc.perform(delete("/api/auth/usuarios/" + id).header("Authorization", "Bearer " + tokenAdmin))
+        mockMvc.perform(delete("/api/v1/auth/usuarios/" + id).header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(post("/api/auth/login").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(post("/api/v1/auth/login").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"a.eliminar@correo.cl\",\"password\":\"" + CLAVE + "\"}"))
                 .andExpect(status().isUnauthorized());
     }
@@ -176,9 +176,9 @@ class AuthControllerTest {
         registrar("atacante@correo.cl");
         String tokenCliente = login("atacante@correo.cl", CLAVE);
 
-        mockMvc.perform(delete("/api/auth/usuarios/" + id).header("Authorization", "Bearer " + tokenCliente))
+        mockMvc.perform(delete("/api/v1/auth/usuarios/" + id).header("Authorization", "Bearer " + tokenCliente))
                 .andExpect(status().isForbidden());
-        mockMvc.perform(delete("/api/auth/usuarios/" + id))
+        mockMvc.perform(delete("/api/v1/auth/usuarios/" + id))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -187,7 +187,7 @@ class AuthControllerTest {
     void eliminarInexistente() throws Exception {
         String tokenAdmin = login("admin@admin.cl", "Gasvolcan26");
 
-        mockMvc.perform(delete("/api/auth/usuarios/999999").header("Authorization", "Bearer " + tokenAdmin))
+        mockMvc.perform(delete("/api/v1/auth/usuarios/999999").header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isNotFound());
     }
 
@@ -197,7 +197,44 @@ class AuthControllerTest {
         String tokenAdmin = login("admin@admin.cl", "Gasvolcan26");
         long idAdmin = idDe(tokenAdmin);
 
-        mockMvc.perform(delete("/api/auth/usuarios/" + idAdmin).header("Authorization", "Bearer " + tokenAdmin))
+        mockMvc.perform(delete("/api/v1/auth/usuarios/" + idAdmin).header("Authorization", "Bearer " + tokenAdmin))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @DisplayName("Refresh: con un token vigente entrega uno nuevo con el mismo usuario y rol")
+    void refreshEntregaTokenNuevo() throws Exception {
+        String token = login("admin@admin.cl", "Gasvolcan26");
+
+        String cuerpo = mockMvc.perform(post("/api/v1/auth/refresh").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.token").isNotEmpty())
+                .andExpect(jsonPath("$.usuario.email").value("admin@admin.cl"))
+                .andExpect(jsonPath("$.usuario.rol").value("ADMIN"))
+                .andReturn().getResponse().getContentAsString();
+
+        String nuevo = JsonPath.read(cuerpo, "$.token");
+        mockMvc.perform(get("/api/v1/auth/perfil").header("Authorization", "Bearer " + nuevo))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("Refresh sin token o con token falso devuelve 401")
+    void refreshSinToken() throws Exception {
+        mockMvc.perform(post("/api/v1/auth/refresh")).andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/api/v1/auth/refresh").header("Authorization", "Bearer token.falso.xyz"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @DisplayName("El vendedor inicial tiene rol VENDEDOR y no puede listar usuarios (403)")
+    void vendedorNoListaUsuarios() throws Exception {
+        String token = login("vendedor@volcan.cl", "Vendedor26");
+
+        mockMvc.perform(get("/api/v1/auth/perfil").header("Authorization", "Bearer " + token))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.rol").value("VENDEDOR"));
+        mockMvc.perform(get("/api/v1/auth/usuarios").header("Authorization", "Bearer " + token))
+                .andExpect(status().isForbidden());
     }
 }

@@ -1,0 +1,3 @@
+com\gasvolcan\pedidos\controller\PedidoControllerTest.class
+com\gasvolcan\pedidos\model\EstadoPedidoTest.class
+com\gasvolcan\pedidos\service\PedidoServiceTest.class

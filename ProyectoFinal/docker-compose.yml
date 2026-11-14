@@ -1,0 +1,141 @@
+# Levanta TODO el proyecto con un solo comando:   docker compose up --build
+#   frontend  -> http://localhost:5173
+#   productos -> http://localhost:8081/swagger-ui.html
+#   auth      -> http://localhost:8082/swagger-ui.html
+#   pedidos   -> http://localhost:8083/swagger-ui.html
+# Requiere un archivo .env (copia .env.example).
+
+x-db-comun: &db-comun
+  image: postgres:16
+  restart: unless-stopped
+
+services:
+  # ---------- Bases de datos (una por microservicio) ----------
+  db-productos:
+    <<: *db-comun
+    container_name: db-productos
+    environment:
+      POSTGRES_DB: db_productos
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports: ["5432:5432"]
+    volumes: [pgdata-productos:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d db_productos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [gasvolcan]
+
+  db-usuarios:
+    <<: *db-comun
+    container_name: db-usuarios
+    environment:
+      POSTGRES_DB: db_usuarios
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports: ["5433:5432"]
+    volumes: [pgdata-usuarios:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d db_usuarios"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [gasvolcan]
+
+  db-pedidos:
+    <<: *db-comun
+    container_name: db-pedidos
+    environment:
+      POSTGRES_DB: db_pedidos
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports: ["5434:5432"]
+    volumes: [pgdata-pedidos:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d db_pedidos"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks: [gasvolcan]
+
+  # ---------- Microservicios ----------
+  product-service:
+    build: ./backend(microservice)/product-service
+    container_name: product-service
+    restart: unless-stopped
+    ports: ["8081:8081"]
+    environment:
+      DB_URL: jdbc:postgresql://db-productos:5432/db_productos
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env (mínimo 32 caracteres)}
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:?Define INTERNAL_API_KEY en el archivo .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    depends_on:
+      db-productos: { condition: service_healthy }
+    networks: [gasvolcan]
+
+  auth-service:
+    build: ./backend(microservice)/auth-service
+    container_name: auth-service
+    restart: unless-stopped
+    ports: ["8082:8082"]
+    environment:
+      DB_URL: jdbc:postgresql://db-usuarios:5432/db_usuarios
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env (mínimo 32 caracteres)}
+      JWT_EXPIRATION_MINUTES: ${JWT_EXPIRATION_MINUTES:-120}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Define ADMIN_EMAIL en el archivo .env}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Define ADMIN_PASSWORD en el archivo .env}
+      VENDEDOR_EMAIL: ${VENDEDOR_EMAIL:-vendedor@volcan.cl}
+      VENDEDOR_PASSWORD: ${VENDEDOR_PASSWORD:-Vendedor26}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    depends_on:
+      db-usuarios: { condition: service_healthy }
+    networks: [gasvolcan]
+
+  order-service:
+    build: ./backend(microservice)/order-service
+    container_name: order-service
+    restart: unless-stopped
+    ports: ["8083:8083"]
+    environment:
+      DB_URL: jdbc:postgresql://db-pedidos:5432/db_pedidos
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      # MISMO secreto que auth-service: con él valida los tokens que ese servicio firma
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env (mínimo 32 caracteres)}
+      # Comunicación interna por la red de Docker (nombre del servicio, no localhost)
+      PRODUCT_SERVICE_URL: http://product-service:8081
+      # Misma clave que product-service: permite descontar/aumentar stock
+      INTERNAL_API_KEY: ${INTERNAL_API_KEY:?Define INTERNAL_API_KEY en el archivo .env}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
+    depends_on:
+      db-pedidos: { condition: service_healthy }
+      product-service: { condition: service_started }
+    networks: [gasvolcan]
+
+  # ---------- Frontend (React compilado y servido con nginx) ----------
+  frontend:
+    build:
+      context: ./frontend(web)
+      args:
+        # Direcciones que usa el NAVEGADOR (por eso localhost y los puertos publicados)
+        VITE_PRODUCT_URL: ${VITE_PRODUCT_URL:-http://localhost:8081}
+        VITE_AUTH_URL: ${VITE_AUTH_URL:-http://localhost:8082}
+        VITE_ORDER_URL: ${VITE_ORDER_URL:-http://localhost:8083}
+    container_name: frontend
+    restart: unless-stopped
+    ports: ["5173:80"]
+    depends_on: [product-service, auth-service, order-service]
+    networks: [gasvolcan]
+
+networks:
+  gasvolcan:
+
+volumes:
+  pgdata-productos:
+  pgdata-usuarios:
+  pgdata-pedidos:

@@ -84,6 +84,20 @@ public class ProductoService {
         return ProductoResponse.from(productoRepository.save(producto));
     }
 
+    @Transactional(readOnly = true)
+    public List<ProductoResponse> listarDesactivados() {
+        return productoRepository.findByActivoFalseOrderByCodigoAsc().stream().map(ProductoResponse::from).toList();
+    }
+
+    /** Deshace el borrado lógico: el producto vuelve a aparecer en el catálogo con su stock y precios. */
+    @Transactional
+    public ProductoResponse activar(String codigo) {
+        Producto producto = productoRepository.findByCodigo(codigo)
+                .orElseThrow(() -> new RecursoNoEncontradoException("No existe el producto " + codigo));
+        producto.setActivo(true);
+        return ProductoResponse.from(productoRepository.save(producto));
+    }
+
     @Transactional
     public void desactivar(String codigo) {
         Producto producto = buscarActivo(codigo);

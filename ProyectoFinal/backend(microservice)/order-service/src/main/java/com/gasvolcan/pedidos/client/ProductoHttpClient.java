@@ -20,21 +20,23 @@ public class ProductoHttpClient implements ProductoClient {
 
     private final RestClient restClient;
 
-    public ProductoHttpClient(@Value("${app.productos.url}") String baseUrl) {
+    public ProductoHttpClient(@Value("${app.productos.url}") String baseUrl,
+                              @Value("${app.productos.internal-key}") String claveInterna) {
         HttpClient http = HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
                 .connectTimeout(Duration.ofSeconds(3))
                 .build();
         JdkClientHttpRequestFactory fabrica = new JdkClientHttpRequestFactory(http);
         fabrica.setReadTimeout(Duration.ofSeconds(5));
-        this.restClient = RestClient.builder().baseUrl(baseUrl).requestFactory(fabrica).build();
+        this.restClient = RestClient.builder().baseUrl(baseUrl).requestFactory(fabrica)
+                .defaultHeader("X-Internal-Key", claveInterna).build();
     }
 
     @Override
     public ProductoDto obtener(String codigo) {
         try {
             ProductoDto producto = restClient.get()
-                    .uri("/api/productos/{codigo}", codigo)
+                    .uri("/api/v1/productos/{codigo}", codigo)
                     .retrieve()
                     .body(ProductoDto.class);
             if (producto == null) {
@@ -61,7 +63,7 @@ public class ProductoHttpClient implements ProductoClient {
     private void cambiarStock(String operacion, String codigo, int cantidad) {
         try {
             restClient.put()
-                    .uri("/api/productos/{codigo}/stock/{operacion}", codigo, operacion)
+                    .uri("/api/v1/productos/{codigo}/stock/{operacion}", codigo, operacion)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"cantidad\":" + cantidad + "}")
                     .retrieve()

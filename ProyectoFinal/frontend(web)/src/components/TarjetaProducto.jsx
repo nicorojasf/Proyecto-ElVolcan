@@ -4,7 +4,7 @@ import { categorias } from '../data/productos'
 
 // Prop: producto (un objeto de productos.js)
 export default function TarjetaProducto({ producto }) {
-  const { carrito, agregar, precioDe } = useCarrito()
+  const { carrito, agregar, precioDe, tipoVista } = useCarrito()
   const [agregado, setAgregado] = useState(false)
 
   // Datos derivados: se calculan en cada render, no se guardan en estado
@@ -44,7 +44,7 @@ export default function TarjetaProducto({ producto }) {
           <p className="text-muted small mb-3">{producto.descripcion}</p>
 
           <h4 className="fw-bold text-naranja mb-1">
-            ${precioDe(producto).toLocaleString('es-CL')}
+            ${precioDe(producto, tipoVista).toLocaleString('es-CL')}
           </h4>
           <small className="text-muted d-block mb-2">por {producto.unidad.toLowerCase()}</small>
 

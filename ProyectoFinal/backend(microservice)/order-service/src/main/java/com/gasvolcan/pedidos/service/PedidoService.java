@@ -124,7 +124,7 @@ public class PedidoService {
     public PedidoResponse obtener(Long id, UsuarioActual usuario) {
         Pedido pedido = buscar(id);
         // El pedido de otra persona se responde igual que uno que no existe
-        if (!usuario.admin() && !pedido.getUsuarioId().equals(usuario.id())) {
+        if (!usuario.puedeVerTodos() && !pedido.getUsuarioId().equals(usuario.id())) {
             throw new RecursoNoEncontradoException("No existe el pedido " + id);
         }
         return PedidoResponse.de(pedido);

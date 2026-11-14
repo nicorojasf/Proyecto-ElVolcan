@@ -46,9 +46,9 @@ class PedidoServiceTest {
     private ProductoClient productos;
     private PedidoService service;
 
-    private final UsuarioActual residencial = new UsuarioActual(1L, "ana@correo.cl", false, TipoCliente.RESIDENCIAL);
-    private final UsuarioActual comercial = new UsuarioActual(2L, "taller@correo.cl", false, TipoCliente.COMERCIAL);
-    private final UsuarioActual admin = new UsuarioActual(99L, "admin@admin.cl", true, TipoCliente.COMERCIAL);
+    private final UsuarioActual residencial = new UsuarioActual(1L, "ana@correo.cl", false, false, TipoCliente.RESIDENCIAL);
+    private final UsuarioActual comercial = new UsuarioActual(2L, "taller@correo.cl", false, false, TipoCliente.COMERCIAL);
+    private final UsuarioActual admin = new UsuarioActual(99L, "admin@admin.cl", true, false, TipoCliente.COMERCIAL);
 
     @BeforeEach
     void preparar() {

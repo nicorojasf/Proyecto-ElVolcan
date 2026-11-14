@@ -1,4 +1,4 @@
-import { TAMANOS } from '../../data/adminStore'
+import { TAMANOS } from '../../data/metricas'
 
 export function KpiColor({ titulo, valor, detalle, icono, color }) {
   const textoOscuro = color === 'warning'

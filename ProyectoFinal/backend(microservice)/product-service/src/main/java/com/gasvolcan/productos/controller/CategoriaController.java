@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/categorias")
+@RequestMapping("/api/v1/categorias")
 @Tag(name = "Categorías")
 public class CategoriaController {
 

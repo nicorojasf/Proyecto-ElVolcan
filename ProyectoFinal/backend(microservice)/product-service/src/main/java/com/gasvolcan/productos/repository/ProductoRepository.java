@@ -15,7 +15,11 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     List<Producto> findByCategoriaSlugAndActivoTrueOrderByCodigoAsc(String slug);
 
+    List<Producto> findByActivoFalseOrderByCodigoAsc();
+
     Optional<Producto> findByCodigoAndActivoTrue(String codigo);
+
+    Optional<Producto> findByCodigo(String codigo);
 
     boolean existsByCodigo(String codigo);
 

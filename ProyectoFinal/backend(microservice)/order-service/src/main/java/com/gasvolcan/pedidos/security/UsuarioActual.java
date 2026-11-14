@@ -5,7 +5,12 @@ import com.gasvolcan.pedidos.model.TipoCliente;
 import org.springframework.security.oauth2.jwt.Jwt;
 
 /** Datos del dueño del token (los emite auth-service): uid, sub (correo), rol y tipoCliente. */
-public record UsuarioActual(Long id, String email, boolean admin, TipoCliente tipoCliente) {
+public record UsuarioActual(Long id, String email, boolean admin, boolean vendedor, TipoCliente tipoCliente) {
+
+    /** ADMIN y VENDEDOR pueden consultar los pedidos de cualquier cliente (el vendedor solo en lectura). */
+    public boolean puedeVerTodos() {
+        return admin || vendedor;
+    }
 
     public static UsuarioActual de(Jwt jwt) {
         Object uid = jwt.getClaim("uid");
@@ -16,6 +21,7 @@ public record UsuarioActual(Long id, String email, boolean admin, TipoCliente ti
                 numero.longValue(),
                 jwt.getSubject(),
                 "ADMIN".equals(jwt.getClaimAsString("rol")),
+                "VENDEDOR".equals(jwt.getClaimAsString("rol")),
                 TipoCliente.desde(jwt.getClaimAsString("tipoCliente")));
     }
 }

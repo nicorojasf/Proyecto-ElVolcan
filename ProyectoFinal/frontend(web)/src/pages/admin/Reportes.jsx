@@ -1,8 +1,9 @@
+import { esVenta } from '../../data/metricas'
 import { TarjetaKpi } from './Tarjetas'
 
 export default function Reportes({ pedidos }) {
-  const pagados = pedidos.filter((p) => p.estado === 'pagado')
-  const fallidos = pedidos.length - pagados.length
+  const pagados = pedidos.filter(esVenta)
+  const cancelados = pedidos.length - pagados.length
   const ingresos = pagados.reduce((acc, p) => acc + p.total, 0)
   const ticket = pagados.length ? Math.round(ingresos / pagados.length) : 0
 
@@ -21,8 +22,8 @@ export default function Reportes({ pedidos }) {
     <section>
       <div className="row g-3 mb-4">
         <TarjetaKpi titulo="Ingresos totales" valor={`$${ingresos.toLocaleString('es-CL')}`} color="success" />
-        <TarjetaKpi titulo="Órdenes pagadas" valor={pagados.length} color="primary" />
-        <TarjetaKpi titulo="Pagos fallidos" valor={fallidos} color="danger" />
+        <TarjetaKpi titulo="Órdenes vigentes" valor={pagados.length} color="primary" />
+        <TarjetaKpi titulo="Órdenes canceladas" valor={cancelados} color="danger" />
         <TarjetaKpi titulo="Ticket promedio" valor={`$${ticket.toLocaleString('es-CL')}`} color="warning" />
       </div>
 
