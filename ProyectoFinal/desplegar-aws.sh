@@ -20,12 +20,10 @@ else
 fi
 
 # Direcciones que usa el NAVEGADOR: deben ser la IP pública, no localhost.
-sed -i '/^CORS_ORIGINS=/d;/^VITE_PRODUCT_URL=/d;/^VITE_AUTH_URL=/d;/^VITE_ORDER_URL=/d' .env
+sed -i '/^CORS_ORIGINS=/d;/^VITE_API_URL=/d;/^VITE_PRODUCT_URL=/d;/^VITE_AUTH_URL=/d;/^VITE_ORDER_URL=/d' .env
 cat >> .env <<EOT
 CORS_ORIGINS=http://$IP:5173
-VITE_PRODUCT_URL=http://$IP:8081
-VITE_AUTH_URL=http://$IP:8082
-VITE_ORDER_URL=http://$IP:8083
+VITE_API_URL=http://$IP:8080
 EOT
 
 docker compose up --build -d
@@ -33,4 +31,5 @@ docker compose ps
 
 echo
 echo "Tienda:   http://$IP:5173"
+echo "Gateway:  http://$IP:8080   (el frontend llama solo a esta dirección)"
 echo "Swagger:  http://$IP:8081/swagger-ui.html  |  :8082  |  :8083"

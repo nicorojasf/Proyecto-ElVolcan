@@ -1,5 +1,6 @@
 # Levanta TODO el proyecto con un solo comando:   docker compose up --build
 #   frontend  -> http://localhost:5173
+#   gateway   -> http://localhost:8080   (el frontend llama solo a este)
 #   productos -> http://localhost:8081/swagger-ui.html
 #   auth      -> http://localhost:8082/swagger-ui.html
 #   pedidos   -> http://localhost:8083/swagger-ui.html
@@ -117,19 +118,31 @@ services:
       product-service: { condition: service_started }
     networks: [gasvolcan]
 
+  # ---------- API Gateway: único punto de entrada para el frontend ----------
+  api-gateway:
+    build: ./backend(microservice)/api-gateway
+    container_name: api-gateway
+    restart: unless-stopped
+    ports: ["8080:8080"]
+    environment:
+      # Comunicación interna por la red de Docker (nombre del servicio, no localhost)
+      PRODUCT_SERVICE_URL: http://product-service:8081
+      AUTH_SERVICE_URL: http://auth-service:8082
+      ORDER_SERVICE_URL: http://order-service:8083
+    depends_on: [product-service, auth-service, order-service]
+    networks: [gasvolcan]
+
   # ---------- Frontend (React compilado y servido con nginx) ----------
   frontend:
     build:
       context: ./frontend(web)
       args:
-        # Direcciones que usa el NAVEGADOR (por eso localhost y los puertos publicados)
-        VITE_PRODUCT_URL: ${VITE_PRODUCT_URL:-http://localhost:8081}
-        VITE_AUTH_URL: ${VITE_AUTH_URL:-http://localhost:8082}
-        VITE_ORDER_URL: ${VITE_ORDER_URL:-http://localhost:8083}
+        # Dirección que usa el NAVEGADOR: el gateway (en AWS, la IP pública con el puerto 8080)
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
     container_name: frontend
     restart: unless-stopped
     ports: ["5173:80"]
-    depends_on: [product-service, auth-service, order-service]
+    depends_on: [api-gateway]
     networks: [gasvolcan]
 
 networks:

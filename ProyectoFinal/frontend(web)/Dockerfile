@@ -4,11 +4,9 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-# Las URLs de los servicios se fijan al compilar (Vite las incrusta en el JS)
-ARG VITE_PRODUCT_URL=http://localhost:8081
-ARG VITE_AUTH_URL=http://localhost:8082
-ARG VITE_ORDER_URL=http://localhost:8083
-ENV VITE_PRODUCT_URL=$VITE_PRODUCT_URL VITE_AUTH_URL=$VITE_AUTH_URL VITE_ORDER_URL=$VITE_ORDER_URL
+# La dirección del API Gateway se fija al compilar (Vite la incrusta en el JS)
+ARG VITE_API_URL=http://localhost:8080
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 # Etapa 2: servir los archivos estáticos con nginx

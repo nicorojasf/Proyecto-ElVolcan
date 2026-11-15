@@ -1,5 +1,5 @@
-// Direcciones de los microservicios (las ve el NAVEGADOR, por eso son localhost + puerto publicado).
-// Opcional: con VITE_API_URL se apunta los 3 servicios a una sola dirección (por ejemplo un proxy).
+// Dirección del backend (la ve el NAVEGADOR). Con Docker todo pasa por el API Gateway (VITE_API_URL, puerto 8080).
+// Si VITE_API_URL no está definida (por ejemplo con "npm run dev"), se llama directo a cada microservicio.
 const GATEWAY = import.meta.env.VITE_API_URL
 const PRODUCT_URL = GATEWAY ?? import.meta.env.VITE_PRODUCT_URL ?? 'http://localhost:8081'
 const AUTH_URL = GATEWAY ?? import.meta.env.VITE_AUTH_URL ?? 'http://localhost:8082'

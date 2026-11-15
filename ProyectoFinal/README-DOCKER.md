@@ -7,11 +7,12 @@
 | Servicio | Puerto | Base de datos (puerto en tu PC) |
 |---|---|---|
 | frontend (nginx) | 5173 | - |
+| api-gateway | 8080 | (sin base) enruta hacia los 3 servicios |
 | product-service | 8081 | db-productos (5432) |
 | auth-service | 8082 | db-usuarios (5433) |
 | order-service | 8083 | db-pedidos (5434) |
 
-Comunicación: el navegador llama a 8081/8082/8083. Dentro de Docker, order-service llama a
+Comunicación: el navegador llama solo al API Gateway (8080), que reenvía a 8081/8082/8083 según la ruta (los puertos de los servicios siguen publicados para ver Swagger). Dentro de Docker, order-service llama a
 `http://product-service:8081`. auth-service y order-service comparten `JWT_SECRET`.
 Para borrar también los datos: `docker compose down -v`.
 
