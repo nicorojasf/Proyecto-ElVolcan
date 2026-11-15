@@ -129,6 +129,7 @@ services:
       PRODUCT_SERVICE_URL: http://product-service:8081
       AUTH_SERVICE_URL: http://auth-service:8082
       ORDER_SERVICE_URL: http://order-service:8083
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:5173}
     depends_on: [product-service, auth-service, order-service]
     networks: [gasvolcan]
 

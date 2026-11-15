@@ -8,6 +8,16 @@ spring:
     gateway:
       server:
         webflux:
+          # CORS: el gateway responde el preflight (OPTIONS) del navegador.
+          # Los servicios también añaden su cabecera, por eso se elimina el duplicado abajo.
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: ${CORS_ORIGINS:http://localhost:5173}
+                allowedMethods: "*"
+                allowedHeaders: "*"
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
           # Cada ruta: si la URL empieza con el Path, la petición se reenvía al servicio (uri).
           # Las direcciones salen de variables de entorno; en Docker son los nombres de los contenedores.
           routes:

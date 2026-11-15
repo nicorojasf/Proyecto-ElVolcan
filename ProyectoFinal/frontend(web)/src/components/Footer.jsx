@@ -1,10 +1,12 @@
+import { Link } from 'react-router-dom'
+
 // Datos del footer: arrays de objetos (antes estaban repetidos a mano en el HTML)
 const enlacesEmpresa = [
-  'Quienes somos',
-  'Trabaja En El Volcan',
-  'Encuentranos',
-  'Normativas SEC',
-  'Terminos Y Condiciones',
+  { texto: 'Quienes somos', ruta: 'quienes-somos' },
+  { texto: 'Trabaja En El Volcan', ruta: 'trabaja-con-nosotros' },
+  { texto: 'Encuentranos', ruta: 'encuentranos' },
+  { texto: 'Normativas SEC', ruta: 'normativas-sec' },
+  { texto: 'Terminos Y Condiciones', ruta: 'terminos-y-condiciones' },
 ]
 
 const telefonosAtencion = [
@@ -41,9 +43,9 @@ export default function Footer() {
           <div className="col-md-4">
             <h5 className="fw-bold text-white mb-3">Acerca De Gas El Volcán</h5>
             <ul className="list-unstyled text-secondary-custom mb-0">
-              {enlacesEmpresa.map((texto) => (
-                <li key={texto} className="mb-1">
-                  <a href="#" className="footer-link">• {texto}</a>
+              {enlacesEmpresa.map((e) => (
+                <li key={e.ruta} className="mb-1">
+                  <Link to={`/info/${e.ruta}`} className="footer-link">• {e.texto}</Link>
                 </li>
               ))}
             </ul>

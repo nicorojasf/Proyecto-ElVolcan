@@ -5,6 +5,7 @@ import Catalogo from './pages/Catalogo'
 import Checkout from './pages/Checkout'
 import Login from './pages/Login'
 import Registro from './pages/Registro'
+import Informacion from './pages/Informacion'
 import Admin from './pages/Admin'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/productos" element={<Catalogo />} />
         <Route path="/productos/:slug" element={<Catalogo />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/info/:seccion" element={<Informacion />} />
       </Route>
 
       {/* Admin va aparte: tiene su propio encabezado y solo entra el administrador */}
