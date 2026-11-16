@@ -454,8 +454,8 @@ Proyecto-ElVolcan/
 
 ---
 
-## 👤 Autor
+## 👤 Autores
 
-**Nicolás Rojas** · [@nicorojasf](https://github.com/nicorojasf)
+**Nicolás Rojas** · [@nicorojasf](https://github.com/nicorojasf) **Benjamin Perez**
 
 Proyecto Final de **DSY1104 Desarrollo Fullstack II** · Duoc UC · 2026
